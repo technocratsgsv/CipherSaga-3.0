@@ -13,8 +13,8 @@ export const load = async ({ locals }) => {
   const level = team.data().level;
 
   const now = new Date();
-  const startTime = new Date("2026-03-10T18:39:00Z");
-  const endTime = new Date("2026-03-14T18:39:00Z");
+  const startTime = new Date("2026-01-29T18:39:00Z");
+  const endTime = new Date("2026-02-02T18:39:00Z");
 
   const questionsVisible = now >= startTime && now <= endTime;
 
