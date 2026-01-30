@@ -46,8 +46,8 @@ export const POST: RequestHandler = async ({ request, cookies, locals }) => {
     }
 
     const now = new Date();
-    const startTime = new Date("2026-03-10T18:39:00Z");
-    const endTime = new Date("2026-03-15T18:39:00Z");
+    const startTime = new Date("2026-01-29T18:39:00Z");
+    const endTime = new Date("2026-02-02T18:39:00Z");
 
     const questionsVisible = now >= startTime && now <= endTime;
     if (!isAdmin && !questionsVisible) return error(405, "Method Not Allowed");
