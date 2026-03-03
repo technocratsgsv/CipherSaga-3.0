@@ -3,7 +3,6 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
-import { getAnalytics } from "firebase/analytics";
 import {
   PUBLIC_FIREBASE_API_KEY,
   PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -24,9 +23,15 @@ const firebaseConfig = {
   measurementId: PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
-export const analytics = getAnalytics(app);
+
+export let analytics;
+
+if (browser) {
+  import("firebase/analytics").then(({ getAnalytics }) => {
+    analytics = getAnalytics(app);
+  });
+}
