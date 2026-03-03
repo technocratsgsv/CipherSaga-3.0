@@ -5,10 +5,6 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "gsv_verified",
-          "order": "ASCENDING"
-        },
-        {
           "fieldPath": "level",
           "order": "DESCENDING"
         },
@@ -23,57 +19,7 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "gsv_verified",
-          "order": "DESCENDING"
-        },
-        {
-          "fieldPath": "level",
-          "order": "DESCENDING"
-        },
-        {
-          "fieldPath": "last_change",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "teams",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "level",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "last_change",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "teams",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "level",
-          "order": "DESCENDING"
-        },
-        {
-          "fieldPath": "gsv_verified",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "teams",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "level",
-          "order": "DESCENDING"
-        },
-        {
-          "fieldPath": "last_change",
+          "fieldPath": "banned",
           "order": "ASCENDING"
         }
       ]

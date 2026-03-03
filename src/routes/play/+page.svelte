@@ -11,8 +11,10 @@
         ArrowUpRight,
     } from "lucide-svelte";
     import { Doc } from "sveltefire";
-    import { IconCoins } from "@tabler/icons-svelte";
-    import { IconUsers } from "@tabler/icons-svelte";
+    import {
+        IconCoin as Coin,
+        IconAffiliate as Affiliate,
+    } from "@tabler/icons-svelte";
     import { Input } from "@/components/ui/SignupForm";
     import { sendErrorToast, sendSuccessToast } from "@/toast_utils";
     import { onMount } from "svelte";
@@ -33,7 +35,7 @@
             method: "POST",
             body: JSON.stringify({
                 answer,
-                userId: data.locals.userId,
+                userId: data.locals.userID,
                 questionId: currQuestionData.uid,
             }),
         });
@@ -55,13 +57,30 @@
         if (currQuestionData === null || currQuestionData === undefined) return;
         if (browser) {
             const e = document.getElementById(";)");
-            e.innerHTML = "";
-            e.appendChild(document.createComment(currQuestionData.comment));
+            if (e) {
+                e.innerHTML = "";
+                e.appendChild(document.createComment(currQuestionData.comment));
+            }
         }
+    };
+
+    const handleInput = (e: Event) => {
+        const target = e.target as HTMLInputElement;
+        if (target) {
+            answer = target.value.replace(/[^a-z]/g, "");
+            target.value = answer;
+        }
+    };
+
+    const showLogsModal = () => {
+        (
+            document.getElementById("logsModal") as HTMLDialogElement
+        )?.showModal();
     };
 
     $: currQuestionData, updateComment();
 </script>
+
 <title>Cipher Saga 2.0 - Play</title>
 {#if questions.length > 0}
     <Doc ref={`/teams/${data.locals.userTeam}`} let:data={teamData}>
@@ -113,11 +132,7 @@
                 <IconCoins />
                 {(teamData.level || 1) * 100 - 100}
             </button>
-            <button
-                class="btn btn-ghost"
-                on:click={() =>
-                    document.getElementById("logsModal").showModal()}
-            >
+            <button class="btn btn-ghost" on:click={showLogsModal}>
                 <List />
                 Prev Answers
             </button>
@@ -153,10 +168,7 @@
                         id="answer"
                         placeholder="..."
                         type="text"
-                        onInput={(e) => {
-                            answer = e.target.value.replace(/[^a-z]/g, "");
-                            e.target.value = answer;
-                        }}
+                        on:input={handleInput}
                     />
                 </div>
                 <button

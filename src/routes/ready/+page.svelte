@@ -1,10 +1,9 @@
-
 <script lang="ts">
     /** @type {import('./$types').PageData} */
     export let data;
-    import { BackgroundBeams } from '@/components/ui/BackgroundBeams';
-    import {Motion} from "svelte-motion";
-    import {sendErrorToast,sendSuccessToast} from '$lib/toast_utils';
+    import { BackgroundBeams } from "@/components/ui/BackgroundBeams";
+    import { Motion } from "svelte-motion";
+    import { sendErrorToast, sendSuccessToast } from "$lib/toast_utils";
     // import {Google} from 'lucide-svelte';
     import { IconBrandGithub, IconBrandGoogle, IconBrandOnlyfans } from '@tabler/icons-svelte';
     import {Label,Input} from '@/components/ui/SignupForm';
@@ -12,7 +11,7 @@
     import { GoogleAuthProvider, signInWithPopup , signOut} from 'firebase/auth';
     import { auth } from '$lib/firebase';
     let isAuthLoading = false;
-    import {goto, invalidateAll} from "$app/navigation";
+    import { goto, invalidateAll } from "$app/navigation";
 
     let username = "";
     let firstname = "";
@@ -25,21 +24,31 @@
         GOOGLE_SIGN_IN,
         USERNAME_NAME,
         TEAM_SELECT,
-        DONE
+        DONE,
     }
 
-     const getAccountStateFromStatCode = (loc)=>{
-        const code: number = (loc.userID === null ? 0 : 1) + (loc.userExists === false ? 0 : 1) + (loc.userTeam === null  || loc.userTeam === undefined? 0 : 1);
-        if(code === 3) return AccountState.DONE;
-        if(code === 1) return AccountState.USERNAME_NAME;
-        if(code === 2) return AccountState.TEAM_SELECT;
+    const getAccountStateFromStatCode = (loc: any) => {
+        const code: number =
+            (loc.userID === null ? 0 : 1) +
+            (loc.userExists === false ? 0 : 1) +
+            (loc.userTeam === null || loc.userTeam === undefined ? 0 : 1);
+        if (code === 3) return AccountState.DONE;
+        if (code === 1) return AccountState.USERNAME_NAME;
+        if (code === 2) return AccountState.TEAM_SELECT;
         else return AccountState.GOOGLE_SIGN_IN;
-     }
+    };
 
     $: accState = getAccountStateFromStatCode(data);
     // $: accState = data.userID === null ?
     //     AccountState.GOOGLE_SIGN_IN : (data.userExists === false ? AccountState.USERNAME_NAME : (data.userTeam === undefined ? AccountState.TEAM_SELECT : AccountState.DONE))
-    $: progVal = accState === AccountState.GOOGLE_SIGN_IN ? 0 : (accState === AccountState.USERNAME_NAME ? 33.3 : (accState === AccountState.TEAM_SELECT ? 66.6 : 100))
+    $: progVal =
+        accState === AccountState.GOOGLE_SIGN_IN
+            ? 0
+            : accState === AccountState.USERNAME_NAME
+              ? 33.3
+              : accState === AccountState.TEAM_SELECT
+                ? 66.6
+                : 100;
     async function signInWithGoogle() {
         isAuthLoading = true;
         const provider = new GoogleAuthProvider();
@@ -51,116 +60,144 @@
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({ idToken }),
-
         });
 
         await invalidateAll();
         isAuthLoading = false;
     }
 
-    async function joinTeam(){
+    async function joinTeam() {
         loading = true;
-        const r = await fetch("/api/team/join",{
+        const r = await fetch("/api/team/join", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                inviteCode: teamcode
-            })
+                inviteCode: teamcode,
+            }),
         });
         switch (r.status) {
             case 200:
-                sendSuccessToast("Team joined","You're all set!")
+                sendSuccessToast("Team joined", "You're all set!");
                 accState = AccountState.DONE;
                 // await invalidateAll();
                 break;
 
             case 404:
-                sendErrorToast("Team not found","Please check the code and try again.")
+                sendErrorToast(
+                    "Team not found",
+                    "Please check the code and try again.",
+                );
                 console.log("team not found");
                 break;
 
             case 419:
-                sendErrorToast("Team full","Please try another team.")
+                sendErrorToast("Team full", "Please try another team.");
                 console.log("team is full");
                 break;
 
             case 418:
-                sendErrorToast("Already in this team","You're already in this team.")
+                sendErrorToast(
+                    "Already in this team",
+                    "You're already in this team.",
+                );
                 console.log("already in this team");
                 break;
 
             case 403:
-                sendErrorToast("Already in a team","Leave that team first.")
+                sendErrorToast("Already in a team", "Leave that team first.");
                 console.log("already in a team");
                 break;
 
             default:
-                sendErrorToast("Something went wrong","Please try again later.")
+                sendErrorToast(
+                    "Something went wrong",
+                    "Please try again later.",
+                );
                 console.log(r, "something went wrong");
                 break;
         }
         loading = false;
     }
 
-    async function createTeam(){
+    async function createTeam() {
         loading = true;
-        const r = await fetch("/api/team/create",{
+        const r = await fetch("/api/team/create", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                teamName: teamname
+                teamName: teamname,
             }),
         });
         switch (r.status) {
             case 200:
                 console.log("created");
-                sendSuccessToast("Team created","You're all set!")
-                await invalidateAll();
+                sendSuccessToast("Team created", "You're all set!");
+                location.reload();
                 break;
             case 429:
-                sendErrorToast("Team name taken","Please try a different one.");
+                sendErrorToast(
+                    "Team name taken",
+                    "Please try a different one.",
+                );
                 console.log("team Name is already taken");
                 break;
             case 400:
-                sendErrorToast("Invalid request","Please check your inputs.");
-                console.log("invalid request")
+                sendErrorToast("Invalid request", "Please check your inputs.");
+                console.log("invalid request");
                 break;
             default:
-                sendErrorToast("Something went wrong","Please try again later.");
-                console.log("Something went wrong")
-
+                sendErrorToast(
+                    "Something went wrong",
+                    "Please try again later.",
+                );
+                console.log("Something went wrong");
         }
         loading = false;
     }
 
-    async function updateNameUsername(){
-        loading = true;
-        console.log(username, firstname, lastname)
-        if(username === "" || firstname === "" || lastname === ""){
-           sendErrorToast("required fields","please fill all the fields.")
+    function showModal(id: string) {
+        (document.getElementById(id) as HTMLDialogElement)?.showModal();
+    }
 
-        }
-       else {
+    function closeModal(id: string) {
+        (document.getElementById(id) as HTMLDialogElement)?.close();
+    }
+
+    async function updateNameUsername() {
+        loading = true;
+        console.log(username, firstname, lastname);
+        if (username === "" || firstname === "" || lastname === "") {
+            sendErrorToast("required fields", "please fill all the fields.");
+        } else {
             const r = await fetch("/api/create", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ username, first: firstname, last: lastname }),
+                body: JSON.stringify({
+                    username,
+                    first: firstname,
+                    last: lastname,
+                }),
             });
-            if(r.status === 429){
+            if (r.status === 429) {
                 // alert("Username already exists. Please try another one.")
-                sendErrorToast("username taken","please try a different one");
+                sendErrorToast("username taken", "please try a different one");
+            } else if (r.ok) {
+                sendSuccessToast("Account created", "");
+                location.reload();
             } else {
-                sendSuccessToast("Account created","")
-                await invalidateAll();
+                sendErrorToast(
+                    "Error",
+                    "Failed to create account. Please try again.",
+                );
             }
         }
-       loading = false;
+        loading = false;
     }
 
     async function signoutSSR() {
@@ -171,7 +208,30 @@
         await invalidateAll();
     }
 
+    function handleInput(
+        e: Event,
+        key: "firstname" | "lastname" | "username" | "teamname" | "teamcode",
+    ) {
+        const target = e.currentTarget as HTMLInputElement;
+        const value = target.value;
+        if (key === "username") {
+            username = value.replace(/[^a-zA-Z0-9]/g, "");
+            target.value = username;
+        } else if (key === "teamname") {
+            teamname = value.replace(/[^a-zA-Z0-9 ]/g, "");
+            target.value = teamname;
+        } else if (key === "teamcode") {
+            teamcode = value.replace(/[^a-zA-Z0-9]/g, "").substring(0, 8);
+            target.value = teamcode;
+        } else {
+            const clean = value.replace(/[^a-zA-Z]/g, "");
+            if (key === "firstname") firstname = clean;
+            else lastname = clean;
+            target.value = clean;
+        }
+    }
 </script>
+
 <title>Cipher Saga 2.0 - Ready</title>
 <!--
 <BackgroundBeams/>-->
@@ -183,7 +243,6 @@
 <!--            on:click={() => console.log('Handle authentication...')}-->
 <!--    />-->
 <!--    {/if}-->
-
 
 <!--<div style="justify-content: center;align-items: center;display: flex;">-->
 <!--    <h2>Get Ready to Rumble!</h2>-->
@@ -197,150 +256,236 @@
 <!--    </ul>-->
 <!--</div>-->
 
-<h2 class="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text py-4 text-center text-7xl font-medium tracking-tight text-transparent">
+<h2
+    class="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text py-4 text-center text-7xl font-medium tracking-tight text-transparent"
+>
     Gear up hunters!
 </h2>
 
 <center>
-    <div class="radial-progress font-mono" class:text-sky-500={progVal !== 100} class:text-success={progVal === 100}   style={`--value:${progVal};`} role="progressbar">{progVal}%</div>
+    <div
+        class="radial-progress font-mono"
+        class:text-sky-500={progVal !== 100}
+        class:text-success={progVal === 100}
+        style={`--value:${progVal};`}
+        role="progressbar"
+    >
+        {progVal}%
+    </div>
 </center>
 
-
 {#if accState === AccountState.GOOGLE_SIGN_IN}
-   <center>
-       <h2 class="font-sans text-4xl mt-4 mb-2">Create your account</h2>
-       <p class="font-medium mb-4">Use your <b>GSV Email ID</b>. <br/>If you don't have one, you can still play but you won't be considered for the prizes.</p>
-       <button
-               class=" group/btn relative flex h-10 items-center justify-start space-x-2 rounded-md  px-4 font-medium text-black shadow-input bg-zinc-900 shadow-[0px_0px_1px_1px_var(--neutral-800)] w-[50%]" style="z-index: 1;"
-               disabled={isAuthLoading}
-               on:click={signInWithGoogle}
-       >
-           <IconBrandGoogle class="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-           <span class="text-sm text-neutral-700 dark:text-neutral-300"> Sign in with google </span>
-           <span
-                   class="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100"
-           />
-           <span
-                   class="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100"
-           />
-       </button>
-   </center>
+    <center>
+        <h2 class="font-sans text-4xl mt-4 mb-2">Create your account</h2>
+        <p class="font-medium mb-4">
+            Use your <b>GSV Email ID</b>. <br />If you don't have one, you can
+            still play but you won't be considered for the prizes.
+        </p>
+        <button
+            class=" group/btn relative flex h-10 items-center justify-start space-x-2 rounded-md px-4 font-medium text-black shadow-input bg-zinc-900 shadow-[0px_0px_1px_1px_var(--neutral-800)] w-[50%]"
+            style="z-index: 1;"
+            disabled={isAuthLoading}
+            on:click={signInWithGoogle}
+        >
+            <IconBrandGoogle
+                class="h-4 w-4 text-neutral-800 dark:text-neutral-300"
+            />
+            <span class="text-sm text-neutral-700 dark:text-neutral-300">
+                Sign in with google
+            </span>
+            <span
+                class="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100"
+            />
+            <span
+                class="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100"
+            />
+        </button>
+    </center>
 {/if}
 {#if accState === AccountState.USERNAME_NAME}
-      <center>
-          <div class="w-[50%]">
-              <div class="mb-4 flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0">
-                  <div class={'flex w-full flex-col space-y-2'} style="z-index: 1;" >
-                      <Label htmlFor="firstname" style="color:white!important">First name</Label>
-                      <Input id="firstname" placeholder="First name" type="text" onInput={(e)=>{
-                            firstname = e.target.value.replace(/[^a-zA-Z]/g, '');
-                            e.target.value = firstname;
-                      }}/>
-                  </div>
-                  <div class={'flex w-full flex-col space-y-2'} style="z-index: 1;">
-                      <Label htmlFor="lastname" style="color:white!important">Last name</Label>
-                      <Input id="lastname" placeholder="Last name" type="text" onInput={(e)=>{
-                            lastname = e.target.value.replace(/[^a-zA-Z]/g, '');
-                            e.target.value = lastname;
-                      }}/>
-                  </div>
+    <center>
+        <div class="w-[50%]">
+            <div
+                class="mb-4 flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0"
+            >
+                <div
+                    class={"flex w-full flex-col space-y-2"}
+                    style="z-index: 1;"
+                >
+                    <Label htmlFor="firstname" style="color:white!important"
+                        >First name</Label
+                    >
 
-              </div>
-              <div class="mb-4 flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0">
-                  <div class={'mb-4 flex w-full flex-col space-y-2'} style="z-index: 1;">
-                      <Label htmlFor="email" style="color:white!important">Username</Label>
-                      <Input id="email" placeholder="Pseudonymous123" type="text" onInput={(e)=>{
-                          username = e.target.value.replace(/[^a-zA-Z0-9]/g, '');
-                            e.target.value = username;
-                      }} />
-                  </div>
-              </div>
-              <button
-                      class="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]" style="z-index: 1"
-                      disabled={loading}
-                      on:click={updateNameUsername}
-              >
-                  Next &rarr;
-                  <span
-                          class="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100"
-                  />
-                  <span
-                          class="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100"
-                  />
-              </button>
-          </div>
-      </center>
-
-
-
+                    <!-- ... -->
+                    <Input
+                        id="firstname"
+                        placeholder="First name"
+                        type="text"
+                        onInput={(e) => handleInput(e, "firstname")}
+                    />
+                </div>
+                <div
+                    class={"flex w-full flex-col space-y-2"}
+                    style="z-index: 1;"
+                >
+                    <Label htmlFor="lastname" style="color:white!important"
+                        >Last name</Label
+                    >
+                    <Input
+                        id="lastname"
+                        placeholder="Last name"
+                        type="text"
+                        onInput={(e) => handleInput(e, "lastname")}
+                    />
+                </div>
+            </div>
+            <div
+                class="mb-4 flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0"
+            >
+                <div
+                    class={"mb-4 flex w-full flex-col space-y-2"}
+                    style="z-index: 1;"
+                >
+                    <Label htmlFor="email" style="color:white!important"
+                        >Username</Label
+                    >
+                    <Input
+                        id="email"
+                        placeholder="Pseudonymous123"
+                        type="text"
+                        onInput={(e) => handleInput(e, "username")}
+                    />
+                </div>
+            </div>
+            <button
+                class="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+                style="z-index: 1"
+                disabled={loading}
+                on:click={updateNameUsername}
+            >
+                Next &rarr;
+                <span
+                    class="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100"
+                />
+                <span
+                    class="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100"
+                />
+            </button>
+        </div>
+    </center>
 {/if}
 {#if accState === AccountState.TEAM_SELECT}
     <center>
-    <h2 class="font-sans text-4xl mt-4 mb-2">Team selection</h2>
-    <p class="font-medium mb-4">If you would like to play solo, create a team and don't add anyone to it.</p>
-    <button class="relative btn btn-accent btn-wide z-20" on:click={()=>document.getElementById('create_team_modal').showModal()}>
-        Create team
-    </button>
-
-        <button class="relative btn btn-secondary btn-wide z-20" on:click={()=>document.getElementById('join_team_modal').showModal()}>
-            Join team
+        <h2 class="font-sans text-4xl mt-4 mb-2">Team selection</h2>
+        <p class="font-medium mb-4">
+            If you would like to play solo, create a team and don't add anyone
+            to it.
+        </p>
+        <button
+            class="relative btn btn-accent btn-wide z-20"
+            on:click={() => showModal("create_team_modal")}
+        >
+            Create team
         </button>
 
-
+        <button
+            class="relative btn btn-secondary btn-wide z-20"
+            on:click={() => showModal("join_team_modal")}
+        >
+            Join team
+        </button>
     </center>
-
-
 {/if}
 {#if accState === AccountState.DONE}
     <center>
         <h2 class="font-sans text-4xl mt-4 mb-4">You're all set</h2>
-        <button class="relative z-20 mt-4 btn btn-wide btn-primary" on:click={async ()=>await open("https://calendar.google.com/calendar/render?action=TEMPLATE&dates=20250318T235900Z%2F20250318T235900Z&details=&location=&text=Cipher%20Saga%202.0%20Begins")}>Add to calendar</button>
-        <button class="relative z-20 mt-4 btn btn-wide btn-accent" on:click={async ()=>await open("https://discord.gg/Dm5zy3EaE4")}>Join Discord</button>
+        <button
+            class="relative z-20 mt-4 btn btn-wide btn-primary"
+            on:click={async () =>
+                await open(
+                    "https://calendar.google.com/calendar/render?action=TEMPLATE&dates=20250318T235900Z%2F20250318T235900Z&details=&location=&text=Cipher%20Saga%202.0%20Begins",
+                )}>Add to calendar</button
+        >
+        <button
+            class="relative z-20 mt-4 btn btn-wide btn-accent"
+            on:click={async () => await open("https://discord.gg/Dm5zy3EaE4")}
+            >Join Discord</button
+        >
         <!--<button class="relative z-20 mt-4 btn btn-wide btn-info" on:click={async ()=>await open("https://github.com/Soham-Wani/CryptIQ")}>View repository</button>-->
-        <button class="relative z-20 mt-4 btn btn-wide btn-secondary" on:click={async () => await goto('/team')}>View team</button><br>
-        <button class="z-20 mt-4 btn btn-wide btn-gray" on:click={signoutSSR}>Log out</button>
+        <button
+            class="relative z-20 mt-4 btn btn-wide btn-secondary"
+            on:click={async () => await goto("/team")}>View team</button
+        ><br />
+        <button class="z-20 mt-4 btn btn-wide btn-gray" on:click={signoutSSR}
+            >Log out</button
+        >
     </center>
-    {/if}
+{/if}
 
 <!-- You can open the modal using ID.showModal() method -->
 <!--<button class="btn" onclick="my_modal_3.showModal()">open modal</button>-->
 <dialog id="create_team_modal" class="modal">
     <div class="modal-box">
         <form method="dialog">
-            <button disabled={loading} class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            <button
+                disabled={loading}
+                class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                >✕</button
+            >
         </form>
         <h3 class="font-bold text-3xl text-accent mb-4">New team</h3>
-        <div class={'flex w-full flex-col space-y-2'} style="z-index: 1;">
+        <div class={"flex w-full flex-col space-y-2"} style="z-index: 1;">
             <Label htmlFor="teamname">Team name</Label>
-            <Input id="teamname" placeholder="Cipher Saga Monarchs" type="text" onInput={(e)=>{
-                            teamname = e.target.value.replace(/[^a-zA-Z0-9 ]/g, '');
-                            e.target.value = teamname;
-                      }}/>
+            <Input
+                id="teamname"
+                placeholder="Cipher Saga Monarchs"
+                type="text"
+                onInput={(e) => handleInput(e, "teamname")}
+            />
         </div>
-        <button  class="btn btn-accent btn-wide mt-4" on:click={async ()=>{
-            await createTeam();
-            document.getElementById('create_team_modal').close();
-        }} disabled={loading}>{#if loading}<span class="loading loading-ring loading-lg text-accent"></span>{:else}Create{/if}</button>
+        <button
+            class="btn btn-accent btn-wide mt-4"
+            on:click={async () => {
+                await createTeam();
+                closeModal("create_team_modal");
+            }}
+            disabled={loading}
+            >{#if loading}<span
+                    class="loading loading-ring loading-lg text-accent"
+                ></span>{:else}Create{/if}</button
+        >
     </div>
 </dialog>
 
 <dialog id="join_team_modal" class="modal">
     <div class="modal-box">
         <form method="dialog">
-            <button disabled={loading} class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            <button
+                disabled={loading}
+                class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                >✕</button
+            >
         </form>
         <h3 class="font-bold text-3xl text-secondary mb-4">Join team</h3>
-        <div class={'flex w-full flex-col space-y-2'} style="z-index: 1;">
+        <div class={"flex w-full flex-col space-y-2"} style="z-index: 1;">
             <Label htmlFor="teamcode">Team code</Label>
-            <Input id="teamcode" placeholder="abc1234" type="text" onInput={(e)=>{
-                            // 8 char limit
-                            teamcode = e.target.value.replace(/[^a-zA-Z0-9]/g, '').substring(0,8);
-                            e.target.value = teamcode;
-                      }}/>
+            <Input
+                id="teamcode"
+                placeholder="abc1234"
+                type="text"
+                onInput={(e) => handleInput(e, "teamcode")}
+            />
         </div>
-        <button class="btn btn-secondary btn-wide mt-4" on:click={async ()=>{
-            await joinTeam();
-            document.getElementById("join_team_modal").close();
-        }} disabled={loading}>{#if loading}<span class="loading loading-ring loading-lg text-secondary"></span>{:else}join{/if}</button>
+        <button
+            class="btn btn-secondary btn-wide mt-4"
+            on:click={async () => {
+                await joinTeam();
+                closeModal("join_team_modal");
+            }}
+            disabled={loading}
+            >{#if loading}<span
+                    class="loading loading-ring loading-lg text-secondary"
+                ></span>{:else}join{/if}</button
+        >
     </div>
 </dialog>

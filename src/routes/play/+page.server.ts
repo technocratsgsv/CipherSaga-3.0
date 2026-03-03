@@ -4,13 +4,15 @@ import { adminDB } from '@/server/admin';
 const collectionRef = adminDB.collection('/levels').orderBy('level');
 
 let loaded = false;
-let questions = [];
+let questions: any[] = [];
 
-export const load = async ({ locals }) => {
+export const load = async ({ locals }: any) => {
+  if (!locals.userID) return { locals, questions: [] };
   const userDoc = await adminDB.collection('/users').doc(locals.userID).get();
-  const teamId = userDoc.data().team;
+  const teamId = userDoc.data()?.team;
+  if (!teamId) return { locals, questions: [] };
   const team = await adminDB.collection('/teams').doc(teamId).get();
-  const level = team.data().level;
+  const level = team.data()?.level || 0;
 
   const now = new Date();
   const startTime = new Date("2026-02-14T18:39:00Z");
@@ -42,7 +44,7 @@ export const load = async ({ locals }) => {
       });
 
       collectionRef.onSnapshot((newSnapshot) => {
-        const newQuestions = [];
+        const newQuestions: any[] = [];
         newSnapshot.docs.forEach((d) => {
           let newData = d.data();
           newData['answer'] = null;

@@ -1,10 +1,11 @@
 <script lang="ts">
-    import { onMount, onDestroy } from 'svelte';
-    import { writable } from 'svelte/store';
+    import { onMount, onDestroy } from "svelte";
+    import { writable } from "svelte/store";
 
     export let duration = 2000;
-    export let rx = '0';
-    export let ry = '0';
+    export let rx = "0";
+    export let ry = "0";
+    export let onClick: () => void = () => {};
 
     let pathElement: SVGRectElement;
     let progress = writable(0);
@@ -22,7 +23,7 @@
     });
 
     onDestroy(() => {
-        if (typeof cancelAnimationFrame === 'function') {
+        if (typeof cancelAnimationFrame === "function") {
             cancelAnimationFrame(animationFrameId);
         }
     });
@@ -39,15 +40,29 @@
 </script>
 
 <svg
-        xmlns="http://www.w3.org/2000/svg"
-        preserveAspectRatio="none"
-        class="absolute h-full w-full"
+    xmlns="http://www.w3.org/2000/svg"
+    preserveAspectRatio="none"
+    class="absolute h-full w-full"
+    width="100%"
+    height="100%"
+>
+    <rect
+        bind:this={pathElement}
+        fill="none"
         width="100%"
         height="100%"
->
-    <rect bind:this={pathElement} fill="none" width="100%" height="100%" {rx} {ry} />
+        {rx}
+        {ry}
+    />
 </svg>
 
-<div style="position: absolute; top: 0; left: 0; display: inline-block;" style:transform>
+<div
+    style="position: absolute; top: 0; left: 0; display: inline-block;"
+    style:transform
+    on:click={onClick}
+    role="button"
+    tabindex="0"
+    on:keydown={(e) => e.key === "Enter" && onClick()}
+>
     <slot />
 </div>

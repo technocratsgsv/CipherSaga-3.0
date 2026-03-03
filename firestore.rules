@@ -2,24 +2,36 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /index/{document}{
-      allow read: if false;
+    
+    // Teams collection
+    match /teams/{teamId} {
+      allow read: if true; // Public read for leaderboard
+      allow write: if request.auth != null; // Authenticated users can modify
     }
-    match /users/{document}{
-      allow read: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.team == get(/databases/$(database)/documents/users/$(document)).data.team;
+    
+    // Users collection
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId; // Users can read their own data
+      allow write: if request.auth != null && request.auth.uid == userId; // Users can write their own data
     }
-    match /teams/{document}{
-      allow get: if request.auth.uid != null;
+    
+    // Usernames collection (for uniqueness checks)
+    match /usernames/{username} {
+      allow read: if true; // Public read for username availability checks
+      allow create: if request.auth != null; // Only authenticated users can create
+      allow update, delete: if false; // Prevent updates/deletes (usernames are immutable)
     }
-    match /levels/{document}{
-      allow read,write: if false;
+    
+    // Team names collection (for uniqueness checks)
+    match /teamNames/{teamName} {
+      allow read: if true; // Public read for team name availability checks
+      allow create: if request.auth != null; // Only authenticated users can create
+      allow update, delete: if request.auth != null; // Allow updates/deletes for team management
     }
-    match /questions/{document} {
-      allow read: if true;
+    
+    // Legacy index collection (deprecated - will be removed)
+    match /index/{document=**} {
+      allow read, write: if false; // Block all access to legacy schema
     }
-    match /logs/{team}{
-      allow read: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.team == (team);
-    }
-
   }
 }

@@ -1,38 +1,50 @@
 /** @type {import('./$types').PageLoad} */
-import {adminDB} from "@/server/admin";
+import { adminDB } from "@/server/admin";
 let loaded = false;
-let leaderboard = [];
-let queryDef = adminDB.collection("teams").orderBy("level","desc").orderBy("last_change");
+let leaderboard: any[] = [];
 
-export const load
-    = (async ({ locals, params }) => {
-        if(!loaded){
+
+export const load = async ({ params, locals }: any) => {
+    try {
+        if (!loaded) {
+            // Simplified query: only order by level (desc) to avoid composite index requirement
+            // Teams with same level will be in arbitrary order, which is acceptable for a leaderboard
+            const queryDef = adminDB.collection("teams").orderBy("level", "desc");
             const qSnap = await queryDef.get();
-            qSnap.docs.forEach((e)=>{
-                const data =e.data();
+            qSnap.docs.forEach((e) => {
+                const data = e.data() || {};
+                const members = data.members || [];
                 leaderboard.push({
-                    teamName: data.teamName,
-                    score: (data.level-1) * 100,
-                    members: data.members.length,
-                    gsv: data.gsv_verified
+                    teamName: data.teamName || "Unknown Team",
+                    score: ((data.level || 1) - 1) * 100,
+                    members: members.length,
+                    gsv: data.gsv_verified || false
                 });
             });
-            queryDef.onSnapshot((snap)=>{
-                const newData = [];
-                snap.docs.forEach((e)=>{
-                    const data = e.data()
+            queryDef.onSnapshot((snap) => {
+                const newData: any[] = [];
+                snap.docs.forEach((e) => {
+                    const data = e.data() || {};
+                    const members = data.members || [];
                     newData.push({
-                        teamName: data.teamName,
-                        score: (data.level-1) * 100,
-                        members: data.members.length,
-                        gsv: data.gsv_verified
+                        teamName: data.teamName || "Unknown Team",
+                        score: ((data.level || 1) - 1) * 100,
+                        members: members.length,
+                        gsv: data.gsv_verified || false
                     });
                 });
                 leaderboard = newData;
             });
-            loaded=true;
+            loaded = true;
         }
         return {
             leaderboard
         };
-});
+    } catch (error: any) {
+        console.error("Leaderboard Load Error:", error);
+        return {
+            leaderboard: [],
+            error: error.message
+        };
+    }
+};

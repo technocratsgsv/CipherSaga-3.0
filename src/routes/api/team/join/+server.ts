@@ -1,88 +1,86 @@
-import type { RequestHandler } from '../$types';
+import type { RequestHandler } from '@sveltejs/kit';
 import { adminAuth, adminDB } from '$lib/server/admin';
 import { FieldValue } from 'firebase-admin/firestore';
 import { error, json } from '@sveltejs/kit';
 
-let existingTeamCodes = new Map();
-let existingTeamMembers = new Map();
-const indexRef = adminDB.collection("index").doc('nameIndex');
-const userIndexRef = adminDB.collection("index").doc("userIndex");
-let indexDataLoaded = false;
-
-export const POST: RequestHandler = async ({ request, cookies, locals }) => {
-    if (!indexDataLoaded) {
-        const data = (await indexRef.get()).data();
-        existingTeamCodes = new Map(Object.entries(data.teamcodes));
-        existingTeamMembers = new Map(Object.entries(data.teamcounts));
-        indexRef.onSnapshot((snap) => {
-            const snapData = snap.data();
-            existingTeamCodes = new Map(Object.entries(snapData.teamcodes));
-            existingTeamMembers = new Map(Object.entries(snapData.teamcounts));
-        });
-        indexDataLoaded = true
-    }
-    
+export const POST: RequestHandler = async ({ request, locals }: any) => {
     if (locals.userID === null || !locals.userExists) {
         return error(401, 'Unauthorized');
     }
 
     const body = await request.json();
     let { inviteCode } = body;
-    console.log("bad request check")
-    if (inviteCode === undefined || inviteCode === null || inviteCode.trim() === "") return error(400, "Bad Request");
-    console.log("not a bad request")
-    inviteCode = inviteCode.toLowerCase();
-    let shouldCheck = true;
+    if (!inviteCode || typeof inviteCode !== 'string' || inviteCode.trim() === "") return error(400, "Bad Request");
+    inviteCode = inviteCode.toLowerCase().trim();
 
-    if ((existingTeamMembers[inviteCode] === undefined || existingTeamMembers[inviteCode] === null) && (existingTeamCodes[inviteCode] === undefined || existingTeamCodes[inviteCode] === null)) {
-        // if we know it exists, don't need to check to get ID
-        console.log("no check needed")
-        shouldCheck = false;
+    if (locals.userTeam !== null) {
+        return error(403, "Already in a team");
     }
-    await adminDB.runTransaction(async (transaction) => {
-        let teamID;
-        if (shouldCheck) {
-            // if it doesn't exist update the data.
-            const currData = (await transaction.get(indexRef)).data();
-            existingTeamMembers = currData.teamcounts;
-            existingTeamCodes = currData.teamcodes;
+
+    try {
+        // 1. Find the team by code (READ)
+        // We query the 'teams' collection. We need an index on 'code'.
+        const teamQuery = await adminDB.collection('teams').where('code', '==', inviteCode).limit(1).get();
+
+        if (teamQuery.empty) {
+            return error(404, "Team not found");
         }
-        console.log("not found check");
-        console.log(inviteCode);
-        console.log(existingTeamCodes)
-        console.log(existingTeamMembers);
-        if (!existingTeamCodes.has(inviteCode)) return error(404, "Not Found"); // code isn't a thing
-        console.log("team is full check");
-        if (existingTeamMembers.get(inviteCode).length >= 3) return error(419, "Team is full"); // team full
-        console.log("already in this team check");
-        console.log(existingTeamMembers.get(inviteCode))
-        if (existingTeamMembers.get(inviteCode).includes(locals.userID)) return error(418, "Already in this team"); // already in team
-        console.log("already in a team check");
-        if (locals.userTeam !== null) return error(403, "Already in a team"); // in different team
-        teamID = existingTeamCodes.get(inviteCode);
-        const teamRef = adminDB.collection('teams').doc(teamID);
-        const userRef = adminDB.collection('users').doc(locals.userID!);
-        // docs
-        const userRecord = await adminAuth.getUser(locals.userID!);
-        let teamData = {
-            members: FieldValue.arrayUnion(locals.userID),
-        };
-        if (!(userRecord.email || "").endsWith("gsv.ac.in")) {
-            teamData['gsv_verified'] = false;
-        }
-        await transaction.update(teamRef, teamData);
-        await transaction.update(userRef, {
-            team: teamID
+
+        const teamDocSnapshot = teamQuery.docs[0];
+        const teamID = teamDocSnapshot.id;
+
+        // 2. Transactional Join
+        await adminDB.runTransaction(async (transaction) => {
+            const teamRef = adminDB.collection('teams').doc(teamID);
+            const userRef = adminDB.collection('users').doc(locals.userID!);
+
+            // Re-read team inside transaction to ensure we don't overfill
+            const teamDoc = await transaction.get(teamRef);
+            if (!teamDoc.exists) throw new Error("Team not found during transaction");
+
+            const teamData = teamDoc.data();
+            const members = teamData?.members || [];
+
+            // VALIDATIONS
+            if (members.length >= 3) {
+                throw new Error("Team is full");
+            }
+            if (members.includes(locals.userID)) {
+                throw new Error("Already in this team");
+            }
+
+            // USER VALIDATION
+            const userRecord = await adminAuth.getUser(locals.userID!);
+
+            // PREPARE UPDATES
+            let updateData: any = {
+                members: FieldValue.arrayUnion(locals.userID)
+            };
+
+            // If user is from outside organization, maybe flag team? 
+            // Original logic: if NOT endsWith gsv.ac.in -> gsv_verified = false
+            if (!(userRecord.email || "").endsWith("gsv.ac.in")) {
+                updateData.gsv_verified = false;
+            }
+
+            transaction.update(teamRef, updateData);
+            transaction.update(userRef, { team: teamID });
+
+            // NO UPDATES TO 'nameIndex' or 'userIndex'
         });
-        //index
-        let userIndexData = {};
-        userIndexData[locals.userID] = teamID
-        await transaction.update(userIndexRef, userIndexData);
-        let indexData = {};
-        indexData[`teamcounts.${inviteCode}`] = FieldValue.arrayUnion(locals.userID)
-        await transaction.update(indexRef, indexData);
+
+        // Set local state for client session immediately if possible (locals is server-side only for this req)
         locals.userTeam = teamID;
+
         return json({ success: true, teamID });
-    });
-    return json({});
+
+    } catch (e: any) {
+        const msg = e.message;
+        if (msg === "Team is full") return error(419, "Team is full");
+        if (msg === "Already in this team") return error(418, "Already in this team");
+        if (msg === "Team not found") return error(404, "Team not found"); // Should be caught by query check usually
+
+        console.error("Join Team Error:", e);
+        return error(500, `Internal Server Error: ${msg}`);
+    }
 };

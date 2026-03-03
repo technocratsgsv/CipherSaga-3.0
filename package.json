@@ -36,6 +36,7 @@
 		"clsx": "^2.1.1",
 		"firebase": "^9.23.0",
 		"firebase-admin": "^12.1.0",
+		"html5-qrcode": "^2.3.8",
 		"lucide-svelte": "^0.377.0",
 		"mode-watcher": "^0.3.0",
 		"referral-codes": "^3.0.0",

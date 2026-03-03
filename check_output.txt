@@ -1,0 +1,827 @@
+
+> cryptiq@0.0.1 check
+> svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+
+
+====================================
+Loading svelte-check in workspace: /Users/neeraj/cipher-saga
+Getting Svelte diagnostics...
+
+[sentry-vite-plugin] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+[sentry-vite-plugin] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+3:40:46 PM [vite-plugin-svelte] WARNING: The following packages have a svelte field in their package.json but no exports condition for svelte.
+
+svelte-countdown@1.1.2
+svelte-toasts@1.1.2
+
+Please see https://github.com/sveltejs/vite-plugin-svelte/blob/main/docs/faq.md#missing-exports-condition for details.
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+
+🌼   daisyUI 4.10.3
+├─ ✔︎ 1 theme added		https://daisyui.com/docs/themes
+╰─ ★ Star daisyUI on GitHub	https://github.com/saadeghi/daisyui
+
+/Users/neeraj/cipher-saga/src/lib/server/admin.ts:15:33
+Error: 'err' is of type 'unknown'. 
+} catch (err) {
+    if (!/already exists/u.test(err.message)) {
+        console.error('Firebase Admin Error: ', err.stack)
+
+
+/Users/neeraj/cipher-saga/src/lib/server/admin.ts:16:49
+Error: 'err' is of type 'unknown'. 
+    if (!/already exists/u.test(err.message)) {
+        console.error('Firebase Admin Error: ', err.stack)
+    }
+
+
+/Users/neeraj/cipher-saga/src/routes/leaderboard/+page.server.ts:4:5
+Error: Variable 'leaderboard' implicitly has type 'any[]' in some locations where its type cannot be determined. 
+let loaded = false;
+let leaderboard = [];
+let queryDef = adminDB.collection("teams").orderBy("level","desc").orderBy("last_change");
+
+
+/Users/neeraj/cipher-saga/src/routes/leaderboard/+page.server.ts:21:23
+Error: Variable 'newData' implicitly has type 'any[]' in some locations where its type cannot be determined. 
+            queryDef.onSnapshot((snap)=>{
+                const newData = [];
+                snap.docs.forEach((e)=>{
+
+
+/Users/neeraj/cipher-saga/src/routes/leaderboard/+page.server.ts:31:31
+Error: Variable 'newData' implicitly has an 'any[]' type. 
+                });
+                leaderboard = newData;
+            });
+
+
+/Users/neeraj/cipher-saga/src/routes/leaderboard/+page.server.ts:36:13
+Error: Variable 'leaderboard' implicitly has an 'any[]' type. 
+        return {
+            leaderboard
+        };
+
+
+/Users/neeraj/cipher-saga/src/routes/play/+page.server.ts:7:5
+Error: Variable 'questions' implicitly has type 'any[]' in some locations where its type cannot be determined. 
+let loaded = false;
+let questions = [];
+
+
+
+/Users/neeraj/cipher-saga/src/routes/play/+page.server.ts:10:58
+Error: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'. 
+export const load = async ({ locals }) => {
+  const userDoc = await adminDB.collection('/users').doc(locals.userID).get();
+  const teamId = userDoc.data().team;
+
+
+/Users/neeraj/cipher-saga/src/routes/play/+page.server.ts:11:18
+Error: Object is possibly 'undefined'. 
+  const userDoc = await adminDB.collection('/users').doc(locals.userID).get();
+  const teamId = userDoc.data().team;
+  const team = await adminDB.collection('/teams').doc(teamId).get();
+
+
+/Users/neeraj/cipher-saga/src/routes/play/+page.server.ts:13:17
+Error: Object is possibly 'undefined'. 
+  const team = await adminDB.collection('/teams').doc(teamId).get();
+  const level = team.data().level;
+
+
+
+/Users/neeraj/cipher-saga/src/routes/play/+page.server.ts:37:15
+Error: Variable 'newQuestions' implicitly has type 'any[]' in some locations where its type cannot be determined. 
+      collectionRef.onSnapshot((newSnapshot) => {
+        const newQuestions = [];
+        newSnapshot.docs.forEach((d) => {
+
+
+/Users/neeraj/cipher-saga/src/routes/play/+page.server.ts:44:21
+Error: Variable 'newQuestions' implicitly has an 'any[]' type. 
+        });
+        questions = newQuestions;
+        console.log('new update');
+
+
+/Users/neeraj/cipher-saga/src/routes/play/+page.server.ts:61:16
+Error: Variable 'questions' implicitly has an 'any[]' type. 
+    locals,
+    questions: questions.slice(0, level),
+  };
+
+
+/Users/neeraj/cipher-saga/src/hooks.client.ts:3:9
+Error: Module '"$env/static/public"' has no exported member 'PUBLIC_SENTRY_DSN'. 
+import * as Sentry from '@sentry/sveltekit';
+import {PUBLIC_SENTRY_DSN} from '$env/static/public';
+
+
+
+/Users/neeraj/cipher-saga/src/hooks.server.ts:6:9
+Error: Module '"$env/static/public"' has no exported member 'PUBLIC_SENTRY_DSN'. 
+import type { Handle } from "@sveltejs/kit";
+import {PUBLIC_SENTRY_DSN} from '$env/static/public';
+Sentry.init({
+
+
+/Users/neeraj/cipher-saga/src/hooks.server.ts:51:13
+Error: Type 'string | undefined' is not assignable to type 'string | null'.
+  Type 'undefined' is not assignable to type 'string | null'. 
+            event.locals.userExists = true;
+            event.locals.userTeam = createdUserDataIndex.get(event.locals.userID);
+            event.locals.banned = bannedTeams.has(event.locals.userTeam);
+
+
+/Users/neeraj/cipher-saga/src/hooks.server.ts:52:51
+Error: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'. 
+            event.locals.userTeam = createdUserDataIndex.get(event.locals.userID);
+            event.locals.banned = bannedTeams.has(event.locals.userTeam);
+
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/BackgroundBeams/BackgroundBeams.svelte:85:35
+Error: Argument of type 'SVGPathElement' is not assignable to parameter of type 'HTMLElement'.
+  Type 'SVGPathElement' is missing the following properties from type 'HTMLElement': accessKey, accessKeyLabel, autocapitalize, dir, and 24 more. (ts)
+                <path
+                        use:motion
+                        d={path}
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/BackgroundBeams/BackgroundBeams.svelte:112:39
+Error: Argument of type 'SVGLinearGradientElement' is not assignable to parameter of type 'HTMLElement'.
+  Type 'SVGLinearGradientElement' is missing the following properties from type 'HTMLElement': accessKey, accessKeyLabel, autocapitalize, dir, and 24 more. (ts)
+                    <linearGradient
+                            use:motion
+                            id={`linearGradient-${index}`}
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/GlowingStars/GlowingStarsBackgroundCard.svelte:11:1
+Warn: A11y: <div> with mouseenter, mouseleave handlers must have an ARIA role (svelte)
+
+<div
+        on:mouseenter={() => (mouseEnter = true)}
+        on:mouseleave={() => (mouseEnter = false)}
+        class={cn(
+		'h-full max-h-[25rem] m-4 w-full max-w-[25vw] rounded-xl border border-[#eaeaea] bg-[linear-gradient(110deg,#333_0.6%,#222)] p-4 dark:border-neutral-600',
+		className
+	)}
+>
+    <div class="flex items-center justify-center">
+        <Illustration {mouseEnter} glowColorClass={bgColorclass}/>
+    </div>
+    <div class="px-2 pb-6"><slot /></div>
+</div>
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/LampEffect/LampEffect.svelte:2:16
+Warn: 'cn' is not defined. Consider adding a <script> block with 'export let cn' to declare a prop (svelte)
+<div
+        class={cn(
+		'relative z-0 flex min-h-screen w-full flex-col items-center justify-center overflow-hidden rounded-md bg-slate-950',
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/LampEffect/LampEffect.svelte:4:3
+Warn: 'className' is not defined. Consider adding a <script> block with 'export let className' to declare a prop (svelte)
+		'relative z-0 flex min-h-screen w-full flex-col items-center justify-center overflow-hidden rounded-md bg-slate-950',
+		className
+	)}
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/LampEffect/LampEffect.svelte:8:9
+Warn: 'Motion' is not defined. Consider adding a <script> block with 'export let Motion' to declare a prop (svelte)
+    <div class="relative isolate z-0 flex w-full flex-1 scale-y-125 items-center justify-center">
+        <Motion
+                let:motion
+                initial={{ opacity: 0.5, width: '15rem' }}
+                whileInView={{ opacity: 1, width: '30rem' }}
+                transition={{
+				delay: 0.3,
+				duration: 0.8,
+				ease: 'easeInOut'
+			}}
+                style={{
+				backgroundImage: `conic-gradient(var(--conic-position), var(--tw-gradient-stops))`
+			}}
+        >
+            <div
+                    use:motion
+                    class="bg-gradient-conic absolute inset-auto right-1/2 h-56 w-[30rem] overflow-visible from-primary via-transparent to-transparent text-white [--conic-position:from_70deg_at_center_top]"
+            >
+                <div
+                        class="absolute bottom-0 left-0 z-20 h-40 w-[100%] bg-slate-950 [mask-image:linear-gradient(to_top,white,transparent)]"
+                />
+                <div
+                        class="absolute bottom-0 left-0 z-20 h-[100%] w-40 bg-slate-950 [mask-image:linear-gradient(to_right,white,transparent)]"
+                />
+            </div>
+        </Motion>
+        <Motion
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/LampEffect/LampEffect.svelte:33:9
+Warn: 'Motion' is not defined. Consider adding a <script> block with 'export let Motion' to declare a prop (svelte)
+        </Motion>
+        <Motion
+                let:motion
+                initial={{ opacity: 0.5, width: '15rem' }}
+                whileInView={{ opacity: 1, width: '30rem' }}
+                transition={{
+				delay: 0.3,
+				duration: 0.8,
+				ease: 'easeInOut'
+			}}
+                style={{
+				backgroundImage: `conic-gradient(var(--conic-position), var(--tw-gradient-stops))`
+			}}
+        >
+            <div
+                    use:motion
+                    style="background-image: conic-gradient(var(--conic-position), var(--tw-gradient-stops));"
+                    class="bg-gradient-conic absolute inset-auto left-1/2 h-56 w-[30rem] from-transparent via-transparent to-primary text-white [--conic-position:from_290deg_at_center_top]"
+            >
+                <div
+                        class="absolute bottom-0 right-0 z-20 h-[100%] w-40 bg-slate-950 [mask-image:linear-gradient(to_left,white,transparent)]"
+                />
+                <div
+                        class="absolute bottom-0 right-0 z-20 h-40 w-[100%] bg-slate-950 [mask-image:linear-gradient(to_top,white,transparent)]"
+                />
+            </div>
+        </Motion>
+        <div
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/LampEffect/LampEffect.svelte:66:9
+Warn: 'Motion' is not defined. Consider adding a <script> block with 'export let Motion' to declare a prop (svelte)
+        ></div>
+        <Motion
+                let:motion
+                initial={{ width: '8rem' }}
+                whileInView={{ width: '16rem' }}
+                transition={{
+				delay: 0.3,
+				duration: 0.8,
+				ease: 'easeInOut'
+			}}
+        >
+            <div
+                    use:motion
+                    class="absolute inset-auto z-30 h-36 w-64 -translate-y-[6rem] rounded-full bg-primary blur-2xl"
+            ></div>
+        </Motion>
+        <Motion
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/LampEffect/LampEffect.svelte:81:9
+Warn: 'Motion' is not defined. Consider adding a <script> block with 'export let Motion' to declare a prop (svelte)
+        </Motion>
+        <Motion
+                let:motion
+                initial={{ width: '15rem' }}
+                whileInView={{ width: '30rem' }}
+                transition={{
+				delay: 0.3,
+				duration: 0.8,
+				ease: 'easeInOut'
+			}}
+        >
+            <div
+                    use:motion
+                    class="absolute inset-auto z-50 h-0.5 w-[30rem] -translate-y-[7rem] bg-primary"
+            ></div>
+        </Motion>
+
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/LampEffect/LampEffect.svelte:2:16
+Error: Cannot find name 'cn'. (js)
+<div
+        class={cn(
+		'relative z-0 flex min-h-screen w-full flex-col items-center justify-center overflow-hidden rounded-md bg-slate-950',
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/LampEffect/LampEffect.svelte:4:3
+Error: Cannot find name 'className'. (js)
+		'relative z-0 flex min-h-screen w-full flex-col items-center justify-center overflow-hidden rounded-md bg-slate-950',
+		className
+	)}
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/LampEffect/LampEffect.svelte:8:10
+Error: Cannot find name 'Motion'. Did you mean 'Option'? (js)
+    <div class="relative isolate z-0 flex w-full flex-1 scale-y-125 items-center justify-center">
+        <Motion
+                let:motion
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/LampEffect/LampEffect.svelte:32:11
+Error: Cannot find name 'Motion'. Did you mean 'Option'? (js)
+            </div>
+        </Motion>
+        <Motion
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/LampEffect/LampEffect.svelte:33:10
+Error: Cannot find name 'Motion'. Did you mean 'Option'? (js)
+        </Motion>
+        <Motion
+                let:motion
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/LampEffect/LampEffect.svelte:58:11
+Error: Cannot find name 'Motion'. Did you mean 'Option'? (js)
+            </div>
+        </Motion>
+        <div
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/LampEffect/LampEffect.svelte:66:10
+Error: Cannot find name 'Motion'. Did you mean 'Option'? (js)
+        ></div>
+        <Motion
+                let:motion
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/LampEffect/LampEffect.svelte:80:11
+Error: Cannot find name 'Motion'. Did you mean 'Option'? (js)
+            ></div>
+        </Motion>
+        <Motion
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/LampEffect/LampEffect.svelte:81:10
+Error: Cannot find name 'Motion'. Did you mean 'Option'? (js)
+        </Motion>
+        <Motion
+                let:motion
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/LampEffect/LampEffect.svelte:95:11
+Error: Cannot find name 'Motion'. Did you mean 'Option'? (js)
+            ></div>
+        </Motion>
+
+
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/SignupForm/Input.svelte:44:5
+Warn: A11y: <div> with mousemove, mouseenter, mouseleave handlers must have an ARIA role (svelte)
+>
+    <div
+            use:motion
+            on:mousemove={handleMouseMove}
+            on:mouseenter={() => (visible = true)}
+            on:mouseleave={() => (visible = false)}
+            class="group/input rounded-lg p-[2px] transition duration-300"
+    >
+        <input
+                on:input={onInput}
+                {type}
+                class={cn(
+				`dark:placeholder-text-neutral-600 duration-400 flex h-10 w-full rounded-md border-none bg-gray-50 px-3 py-2 text-sm text-black shadow-input  transition file:border-0
+        file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-400
+        focus-visible:outline-none focus-visible:ring-[2px]  focus-visible:ring-neutral-400 disabled:cursor-not-allowed
+         disabled:opacity-50 group-hover/input:shadow-none
+         dark:bg-zinc-800
+         dark:text-white dark:shadow-[0px_0px_1px_1px_var(--neutral-700)] dark:focus-visible:ring-neutral-600
+         `,
+				className
+			)}
+                {...$$restProps}
+        />
+    </div>
+</Motion>
+
+/Users/neeraj/cipher-saga/src/lib/components/ui/SignupForm/Input.svelte:52:20
+Error: Type '(e: InputEvent) => void' is not assignable to type 'FormEventHandler<HTMLInputElement>'.
+  Types of parameters 'e' and 'event' are incompatible.
+    Type 'Event & { currentTarget: EventTarget & HTMLInputElement; }' is missing the following properties from type 'InputEvent': data, dataTransfer, inputType, isComposing, and 5 more. (ts)
+        <input
+                on:input={onInput}
+                {type}
+
+
+/Users/neeraj/cipher-saga/src/routes/api/seed_bonus/+server.ts:25:30
+Error: 'e' is of type 'unknown'. 
+    } catch (e) {
+        return json({ error: e.message }, { status: 500 });
+    }
+
+
+/Users/neeraj/cipher-saga/src/routes/api/submit/+server.ts:33:20
+Error: Object is possibly 'undefined'. 
+    const userDoc = await adminDB.collection('/users').doc(locals.userID).get();
+    const teamId = userDoc.data().team;
+    const team = await adminDB.collection('/teams').doc(teamId).get();
+
+
+/Users/neeraj/cipher-saga/src/routes/api/submit/+server.ts:35:19
+Error: Object is possibly 'undefined'. 
+    const team = await adminDB.collection('/teams').doc(teamId).get();
+    const level = team.data().level;
+    let isAdmin = false;
+
+
+/Users/neeraj/cipher-saga/src/routes/api/submit/+server.ts:56:28
+Error: Object is possibly 'undefined'. 
+    const submittedLevelDoc = await adminDB.collection('/levels').doc(questionId).get();
+    const submittedLevel = submittedLevelDoc.data().level;
+    if (level < submittedLevel) return error(405, "Method Not Allowed");
+
+
+/Users/neeraj/cipher-saga/src/routes/api/submit/+server.ts:67:46
+Error: 'teamData' is possibly 'undefined'. 
+        const teamData = teamDoc.data();
+        let completedLevels: Array<string> = teamData['completed_levels'] || [];
+        console.log(`completedLevels ${completedLevels} ${typeof completedLevels}`);
+
+
+/Users/neeraj/cipher-saga/src/routes/api/submit/+server.ts:74:30
+Error: 'teamData' is possibly 'undefined'. 
+        if (answer === actualAnswer) {
+            let next_level = teamData.level;
+            if (teamData.gsv_verified || !teamData.gsv_verified) next_level++;
+
+
+/Users/neeraj/cipher-saga/src/routes/api/submit/+server.ts:75:17
+Error: 'teamData' is possibly 'undefined'. 
+            let next_level = teamData.level;
+            if (teamData.gsv_verified || !teamData.gsv_verified) next_level++;
+            await transaction.update(teamRef, {
+
+
+/Users/neeraj/cipher-saga/src/routes/api/submit/+server.ts:75:43
+Error: 'teamData' is possibly 'undefined'. 
+            let next_level = teamData.level;
+            if (teamData.gsv_verified || !teamData.gsv_verified) next_level++;
+            await transaction.update(teamRef, {
+
+
+/Users/neeraj/cipher-saga/src/routes/api/team/create/+server.ts:1:37
+Error: Cannot find module '../$types' or its corresponding type declarations. 
+import type { RequestHandler } from '../$types';
+import { adminDB, adminAuth } from '$lib/server/admin';
+
+
+/Users/neeraj/cipher-saga/src/routes/api/team/create/+server.ts:8:46
+Error: Binding element 'request' implicitly has an 'any' type. 
+
+export const POST: RequestHandler = async ({ request, locals }) => {
+
+
+
+/Users/neeraj/cipher-saga/src/routes/api/team/create/+server.ts:8:55
+Error: Binding element 'locals' implicitly has an 'any' type. 
+
+export const POST: RequestHandler = async ({ request, locals }) => {
+
+
+
+/Users/neeraj/cipher-saga/src/routes/api/team/join/+server.ts:1:37
+Error: Cannot find module '../$types' or its corresponding type declarations. 
+import type { RequestHandler } from '../$types';
+import { adminAuth, adminDB } from '$lib/server/admin';
+
+
+/Users/neeraj/cipher-saga/src/routes/api/team/join/+server.ts:6:46
+Error: Binding element 'request' implicitly has an 'any' type. 
+
+export const POST: RequestHandler = async ({ request, locals }) => {
+    if (locals.userID === null || !locals.userExists) {
+
+
+/Users/neeraj/cipher-saga/src/routes/api/team/join/+server.ts:6:55
+Error: Binding element 'locals' implicitly has an 'any' type. 
+
+export const POST: RequestHandler = async ({ request, locals }) => {
+    if (locals.userID === null || !locals.userExists) {
+
+
+/Users/neeraj/cipher-saga/src/routes/api/team/leave/+server.ts:1:37
+Error: Cannot find module '../$types' or its corresponding type declarations. 
+import type { RequestHandler } from '../$types';
+import { adminDB, adminAuth } from '$lib/server/admin';
+
+
+/Users/neeraj/cipher-saga/src/routes/api/team/leave/+server.ts:6:46
+Error: Binding element 'request' implicitly has an 'any' type. 
+
+export const POST: RequestHandler = async ({ request, cookies, locals }) => {
+
+
+
+/Users/neeraj/cipher-saga/src/routes/api/team/leave/+server.ts:6:55
+Error: Binding element 'cookies' implicitly has an 'any' type. 
+
+export const POST: RequestHandler = async ({ request, cookies, locals }) => {
+
+
+
+/Users/neeraj/cipher-saga/src/routes/api/team/leave/+server.ts:6:64
+Error: Binding element 'locals' implicitly has an 'any' type. 
+
+export const POST: RequestHandler = async ({ request, cookies, locals }) => {
+
+
+
+/Users/neeraj/cipher-saga/src/routes/api/team/leave/+server.ts:13:24
+Error: Object is possibly 'undefined'. 
+        const userDoc = await adminDB.collection('/users').doc(locals.userID).get();
+        const teamId = userDoc.data().team;
+        const team = await adminDB.collection('/teams').doc(teamId).get();
+
+
+/Users/neeraj/cipher-saga/src/routes/api/team/leave/+server.ts:15:23
+Error: Object is possibly 'undefined'. 
+        const team = await adminDB.collection('/teams').doc(teamId).get();
+        const level = team.data().level;
+        let isAdmin = false;
+
+
+/Users/neeraj/cipher-saga/src/routes/api/team/leave/+server.ts:39:55
+Error: Parameter 'e' implicitly has an 'any' type. 
+            if (teamData === undefined) return error(404, "Not Found");
+            let newMembers = teamData.members.filter((e) => e !== locals.userID);
+            if (newMembers.length === 0) {
+
+
+/Users/neeraj/cipher-saga/src/routes/api/team/leave/+server.ts:45:17
+Error: Element implicitly has an 'any' type because expression of type '`teamcodes.${any}`' can't be used to index type '{ teamnames: FieldValue; }'. 
+                }
+                nameIndexData[`teamcodes.${teamData.code}`] = FieldValue.delete();
+                nameIndexData[`teamcounts.${teamData.code}`] = FieldValue.delete();
+
+
+/Users/neeraj/cipher-saga/src/routes/api/team/leave/+server.ts:46:17
+Error: Element implicitly has an 'any' type because expression of type '`teamcounts.${any}`' can't be used to index type '{ teamnames: FieldValue; }'. 
+                nameIndexData[`teamcodes.${teamData.code}`] = FieldValue.delete();
+                nameIndexData[`teamcounts.${teamData.code}`] = FieldValue.delete();
+                await transaction.update(nameIndexRef, nameIndexData)
+
+
+/Users/neeraj/cipher-saga/src/routes/api/team/leave/+server.ts:63:17
+Error: Element implicitly has an 'any' type because expression of type '`teamcounts.${any}`' can't be used to index type '{}'. 
+                let nameIndexData = {}
+                nameIndexData[`teamcounts.${teamData.code}`] = newMembers
+                await transaction.update(nameIndexRef, nameIndexData);
+
+
+/Users/neeraj/cipher-saga/src/routes/api/team/leave/+server.ts:70:13
+Error: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'. 
+            let userIndexData = {};
+            userIndexData[locals.userID] = null
+            await transaction.update(userIndexRef, userIndexData);
+
+
+/Users/neeraj/cipher-saga/src/routes/+page.svelte:359:36
+Warn: A11y: '' is not a valid href attribute (svelte)
+                            <div class="flex flex-col items-center">
+                                <a href="">
+                                    <img src="https://i.ibb.co/whYZ0Ws3/Whats-App-Image-2025-03-13-at-9-40-35-PM.jpg" alt="Soham Wani" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+
+
+/Users/neeraj/cipher-saga/src/routes/+page.svelte:445:36
+Warn: A11y: '' is not a valid href attribute (svelte)
+                            <div class="flex flex-col items-center">
+                                <a href="">
+                                    <img src="https://i.ibb.co/qM2wVX1z/Logo.png" alt="TechnoCrats" class="w-20 h-20 rounded-full mb-2 mx-auto" />
+
+
+/Users/neeraj/cipher-saga/src/routes/+page.svelte:4:27
+Error: Could not find a declaration file for module 'svelte-countdown/src/index.js'. '/Users/neeraj/cipher-saga/node_modules/svelte-countdown/src/index.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/svelte-countdown` if it exists or add a new declaration (.d.ts) file containing `declare module 'svelte-countdown/src/index.js';` (ts)
+    import { Button } from "@/components/ui/MovingBorder";
+    import Countdown from "svelte-countdown/src/index.js";
+    let showRules = false;
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:141:52
+Error: 'q' is possibly 'null'. (ts)
+            <div class="grid gap-6">
+                {#each data.questions as q, index (q.id)}
+                    <div
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:145:26
+Error: 'q' is possibly 'null'. (ts)
+                        class="relative group rounded-2xl overflow-hidden transition-all duration-300 border
+                        {q.isSolvedByMe
+                            ? 'bg-gradient-to-br from-green-900/20 to-zinc-900/50 border-green-500/30 shadow-[0_0_30px_-10px_rgba(34,197,94,0.3)]'
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:147:31
+Error: 'q' is possibly 'null'. (ts)
+                            ? 'bg-gradient-to-br from-green-900/20 to-zinc-900/50 border-green-500/30 shadow-[0_0_30px_-10px_rgba(34,197,94,0.3)]'
+                            : q.isUnlocked
+                              ? 'bg-zinc-900/60 hover:bg-zinc-800/60 border-purple-500/40 hover:border-purple-400 shadow-[0_0_30px_-10px_rgba(168,85,247,0.3)]'
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:154:34
+Error: 'q' is possibly 'null'. (ts)
+                        <div class="absolute top-4 right-4 z-20">
+                            {#if q.isSolvedByMe}
+                                <span
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:160:39
+Error: 'q' is possibly 'null'. (ts)
+                                </span>
+                            {:else if q.isUnlocked}
+                                <span
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:178:42
+Error: 'q' is possibly 'null'. (ts)
+                                <div class="mt-1">
+                                    {#if q.isSolvedByMe}
+                                        <div
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:197:47
+Error: 'q' is possibly 'null'. (ts)
+                                        </div>
+                                    {:else if q.isUnlocked}
+                                        <div
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:242:42
+Error: 'q' is possibly 'null'. (ts)
+                                    >
+                                        {q.title || "Mystery Bonus"}
+                                    </h3>
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:247:42
+Error: 'q' is possibly 'null'. (ts)
+                                    >
+                                        {q.description ||
+                                            "A challenge awaits those who find the code."}
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:254:46
+Error: 'q' is possibly 'null'. (ts)
+                                    >
+                                        {#if q.isSolvedByMe}
+                                            <span class="text-green-400"
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:256:58
+Error: 'q' is possibly 'null'. (ts)
+                                            <span class="text-green-400"
+                                                >Value: {q.points} PTS</span
+                                            >
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:260:59
+Error: 'q' is possibly 'null'. (ts)
+                                            <span class="text-purple-400"
+                                                >Reward: {q.points} PTS</span
+                                            >
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:264:47
+Error: 'q' is possibly 'null'. (ts)
+
+                                        {#if !q.isUnlocked && !q.isSolvedByMe}
+                                            <span
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:264:64
+Error: 'q' is possibly 'null'. (ts)
+
+                                        {#if !q.isUnlocked && !q.isSolvedByMe}
+                                            <span
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:289:30
+Error: 'q' is possibly 'null'. (ts)
+                        <!-- Action Area (Accordion) -->
+                        {#if q.isUnlocked && !q.isSolvedByMe}
+                            <div
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:289:47
+Error: 'q' is possibly 'null'. (ts)
+                        <!-- Action Area (Accordion) -->
+                        {#if q.isUnlocked && !q.isSolvedByMe}
+                            <div
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:295:68
+Error: 'q' is possibly 'null'. (ts)
+                                    class="w-full px-8 py-3 flex items-center justify-between text-sm font-bold text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
+                                    on:click={() => toggleQuestion(q.id)}
+                                >
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:298:64
+Error: 'q' is possibly 'null'. (ts)
+                                    <span
+                                        >{activeQuestionId === q.id
+                                            ? "CLOSE INTERFACE"
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:305:41
+Error: 'q' is possibly 'null'. (ts)
+                                        class="h-5 w-5 transition-transform duration-300 {activeQuestionId ===
+                                        q.id
+                                            ? 'rotate-180'
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:319:59
+Error: 'q' is possibly 'null'. (ts)
+
+                                {#if activeQuestionId === q.id}
+                                    <div class="p-8 pt-2" transition:slide>
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:333:50
+Error: 'q' is possibly 'null'. (ts)
+                                            >
+                                                {q.hint}
+                                            </p>
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:348:66
+Error: 'q' is possibly 'null'. (ts)
+                                                    e.key === "Enter" &&
+                                                    handleSubmit(q.id)}
+                                            />
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:353:53
+Error: 'q' is possibly 'null'. (ts)
+                                                disabled={isSubmittingMap[
+                                                    q.id
+                                                ] || !answerInput}
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:356:66
+Error: 'q' is possibly 'null'. (ts)
+                                                on:click={() =>
+                                                    handleSubmit(q.id)}
+                                            >
+
+
+/Users/neeraj/cipher-saga/src/routes/bonus/+page.svelte:358:70
+Error: 'q' is possibly 'null'. (ts)
+                                            >
+                                                {#if isSubmittingMap[q.id]}
+                                                    <span
+
+
+/Users/neeraj/cipher-saga/src/routes/leaderboard/+page.svelte:50:41
+Error: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'. (ts)
+
+            <GlowingStarsBackgroundCard bgColorclass={getBgColorFromPosition(teamPosition)}>
+                <GlowingStarsTitle className={getTextColorFromPosition(teamPosition)}>{team.teamName}</GlowingStarsTitle>
+
+
+/Users/neeraj/cipher-saga/src/routes/play/+page.svelte:101:13
+Warn: A11y: <a> element should have an href attribute (svelte)
+            </button>
+            <a
+                class="btn btn-ghost text-xl"
+                class:text-primary={(teamData.completed_levels || []).includes(
+                    currQuestionData.uid,
+                )}
+            >
+                Level {questions[currQuestion].level}/{questions.length}
+            </a>
+            <button
+
+
+/Users/neeraj/cipher-saga/src/routes/play/+page.svelte:145:25
+Warn: A11y: visible, non-interactive elements with an on:click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as <button type="button"> or <a> might be more appropriate. See https://svelte.dev/docs/accessibility-warnings#a11y-click-events-have-key-events for more details. (svelte)
+                    {#each currQuestionData.files as f}
+                        <span
+                            class="link link-primary"
+                            on:click={() => open(f.url)}>{f.name}</span
+                        >
+                    {/each}
+
+
+/Users/neeraj/cipher-saga/src/routes/play/+page.svelte:145:25
+Warn: A11y: <span> with click handler must have an ARIA role (svelte)
+                    {#each currQuestionData.files as f}
+                        <span
+                            class="link link-primary"
+                            on:click={() => open(f.url)}>{f.name}</span
+                        >
+                    {/each}
+
+
+/Users/neeraj/cipher-saga/src/routes/play/+page.svelte:157:29
+Warn: A11y: <img> element should have an alt attribute (svelte)
+                        {#each currQuestionData.images as i}
+                            <img class="mr-2 ml-2 rounded-lg" src={i} />
+                        {/each}
+
+
+====================================
+svelte-check found 82 errors and 14 warnings in 18 files
