@@ -5,7 +5,7 @@
     let showRules = false;
 </script>
 
-<title>Cipher Saga 2.0 - Home</title>
+<title>Cipher Saga 3.0 - Home</title>
 {#if !showRules}
     <div
         class="relative flex h-screen w-full flex-col items-center justify-center rounded-md px-32 antialiased"
@@ -13,8 +13,8 @@
         <BackgroundBeams />
         <div class="px-8 md:px-16 lg:px-32">
             <Countdown
-                from="2025-03-18 23:59:00"
-                dateFormat="YYYY-MM-DD H:m:s"
+                from="2026-04-10 23:59:00"
+                dateFormat="YYYY-MM-DD HH:mm:ss"
                 zone="Asia/Kolkata"
                 let:remaining
             >
@@ -32,7 +32,7 @@
             <p
                 class="relative z-10 mx-auto my-2 max-w-lg text-center text-sm text-neutral-500"
             >
-                Where minds meet challenges<br />Think . Connect . Solve
+                Get Ready to experience the ultimate challenge of this year!!<br />Think . Connect . Solve
             </p>
         </div>
         <div
@@ -89,13 +89,13 @@
                         <h2
                             class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-2xl font-bold text-transparent pb-[1vh]"
                         >
-                            What is Cipher Saga 2.0?
+                            What is Cipher Saga 3.0?
                         </h2>
                         <p
                             class="relative z-10 text-justify text-sm text-neutral-400"
                         >
-                            Cipher Saga 2.0 is an online cryptic hunt event hosted
-                            during EPITOME'25, the annual techno-management fest of Gati Shakti Vishwavidyalaya.
+                            Cipher Saga 3.0 is the third installment of the online cryptic hunt event hosted
+                            during EPITOME, the annual techno-management fest of Gati Shakti Vishwavidyalaya.
                             Participants will team up to tackle a series of
                             challenging levels, deciphering clues and solving
                             riddles to progress. The event will test their wit,
