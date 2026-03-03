@@ -2,19 +2,30 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
+import { getAnalytics } from "firebase/analytics";
+import {
+  PUBLIC_FIREBASE_API_KEY,
+  PUBLIC_FIREBASE_AUTH_DOMAIN,
+  PUBLIC_FIREBASE_PROJECT_ID,
+  PUBLIC_FIREBASE_STORAGE_BUCKET,
+  PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  PUBLIC_FIREBASE_APP_ID,
+  PUBLIC_FIREBASE_MEASUREMENT_ID
+} from "$env/static/public";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAhglte1ATWbzr8dmdkaCB0mMPWGLUMCxQ",
-  authDomain: "ciphersaga-dev.firebaseapp.com",
-  projectId: "ciphersaga-dev",
-  storageBucket: "ciphersaga-dev.firebasestorage.app",
-  messagingSenderId: "12391029088",
-  appId: "1:12391029088:web:ff77946b0be11ff363a605",
-  measurementId: "G-G5RJW9F4RF"
+  apiKey: PUBLIC_FIREBASE_API_KEY,
+  authDomain: PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: PUBLIC_FIREBASE_APP_ID,
+  measurementId: PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
-export const db = getFirestore();
-export const auth = getAuth();
-export const storage = getStorage();
+export const db = getFirestore(app);
+export const auth = getAuth(app);
+export const storage = getStorage(app);
+export const analytics = getAnalytics(app);
