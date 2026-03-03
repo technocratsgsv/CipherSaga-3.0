@@ -1,3 +1,4 @@
+import { browser } from '$app/environment';
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
