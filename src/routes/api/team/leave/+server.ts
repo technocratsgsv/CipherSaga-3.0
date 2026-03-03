@@ -25,8 +25,8 @@ export const POST: RequestHandler = async ({ request, cookies, locals }) => {
             console.error('Error fetching user data:', error);
         }
         const now = new Date();
-        const startTime = new Date("2025-03-18T18:39:00Z");
-
+        const startTime = new Date("2026-02-14T18:39:00Z");
+  
         await adminDB.runTransaction(async (transaction) => {
             const userRef = adminDB.collection('users').doc(locals.userID!);
             const teamRef = adminDB.collection("teams").doc(locals.userTeam!);

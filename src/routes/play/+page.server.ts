@@ -13,10 +13,16 @@ export const load = async ({ locals }) => {
   const level = team.data().level;
 
   const now = new Date();
-  const startTime = new Date("2025-03-18T18:39:00Z");
-  const endTime = new Date("2025-03-22T18:39:00Z");
-
+  const startTime = new Date("2026-02-14T18:39:00Z");
+  const endTime = new Date("2026-02-18T18:39:00Z");
+  
   const questionsVisible = now >= startTime && now <= endTime;
+
+  console.log("⏰ TIME DEBUG");
+  console.log("Server now (UTC):", now.toISOString());
+  console.log("Start (UTC):", startTime.toISOString());
+  console.log("End (UTC):", endTime.toISOString());
+  console.log("questionsVisible:", questionsVisible);
 
   if (questionsVisible) {
 
@@ -26,6 +32,8 @@ export const load = async ({ locals }) => {
 
     if (!loaded) {
       const querySnapshot = await collectionRef.get();
+      console.log("📦 DB DEBUG");
+      console.log("Levels fetched:", querySnapshot.docs.length);
       querySnapshot.docs.forEach((d) => {
         let data = d.data();
         data['answer'] = null;
