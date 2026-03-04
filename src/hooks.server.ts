@@ -70,12 +70,21 @@ export const handle = sequence(Sentry.sentryHandle(), (async ({ event, resolve }
         }
 
         return resolve(event);
-    } catch (e) {
-        console.error(e);
+    } catch (e: any) {
+        // If the cookie verification fails (e.g. auth/session-cookie-expired or revoked)
+        // We should clear the cookie so the user isn't stuck in a crash loop and is forced to re-login.
+        if (e.code === 'auth/session-cookie-expired' || e.code === 'auth/session-cookie-revoked' || sessionCookie) {
+            event.cookies.delete('__session', { path: '/' });
+            event.cookies.delete('admin_verified', { path: '/' });
+        }
+        console.error("Firebase Auth Error in hooks:", e.message);
+
         event.locals.userID = null;
         event.locals.userExists = false;
         event.locals.userTeam = null;
         event.locals.banned = false;
+        event.locals.isAdmin = false;
+        event.locals.isAdminEmail = false;
         return resolve(event);
     }
 }) satisfies Handle);
