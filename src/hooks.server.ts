@@ -1,6 +1,7 @@
 import { sequence } from "@sveltejs/kit/hooks";
 import * as Sentry from "@sentry/sveltekit";
 import { adminAuth, adminDB } from "$lib/server/admin";
+import { ADMIN_EMAILS } from "$lib/server/adminGuard";
 import type { Handle } from "@sveltejs/kit";
 import { PUBLIC_SENTRY_DSN } from '$env/static/public';
 Sentry.init({
@@ -28,6 +29,10 @@ export const handle = sequence(Sentry.sentryHandle(), (async ({ event, resolve }
         bannedTeamsLoaded = true;
     }
 
+    // Default admin flags
+    event.locals.isAdmin = false;
+    event.locals.isAdminEmail = false;
+
     try {
         if (sessionCookie === undefined) {
             event.locals.userID = null;
@@ -38,6 +43,15 @@ export const handle = sequence(Sentry.sentryHandle(), (async ({ event, resolve }
 
         const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie!);
         event.locals.userID = decodedClaims.uid;
+
+        // Check admin email
+        const email = decodedClaims.email ?? '';
+        const isAdminEmail = ADMIN_EMAILS.includes(email);
+        event.locals.isAdminEmail = isAdminEmail;
+
+        // Admin is fully verified only if email matches AND admin_verified cookie is set
+        const adminVerified = event.cookies.get('admin_verified');
+        event.locals.isAdmin = isAdminEmail && adminVerified === 'true';
 
         // Query user document directly (no more userIndex caching)
         const docRef = adminDB.collection('users').doc(event.locals.userID);

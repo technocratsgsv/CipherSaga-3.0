@@ -8,6 +8,8 @@ declare global {
 			userExists: boolean,
 			userTeam: string | null,
 			banned: boolean,
+			isAdmin: boolean,
+			isAdminEmail: boolean,
 		}
 		// interface PageData {}
 		// interface PageState {}
@@ -15,4 +17,4 @@ declare global {
 	}
 }
 
-export {};
+export { };

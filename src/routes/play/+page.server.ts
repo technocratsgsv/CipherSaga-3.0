@@ -7,6 +7,18 @@ let loaded = false;
 let questions: any[] = [];
 
 export const load = async ({ locals }: any) => {
+  // Admins can always see all questions
+  if (locals.isAdmin) {
+    const querySnapshot = await collectionRef.get();
+    const adminQuestions: any[] = [];
+    querySnapshot.docs.forEach((d) => {
+      let data = d.data();
+      // Keep answers visible for admin (they see the real data)
+      adminQuestions.push(data);
+    });
+    return { locals, questions: adminQuestions };
+  }
+
   if (!locals.userID) return { locals, questions: [] };
   const userDoc = await adminDB.collection('/users').doc(locals.userID).get();
   const teamId = userDoc.data()?.team;
@@ -17,7 +29,7 @@ export const load = async ({ locals }: any) => {
   const now = new Date();
   const startTime = new Date("2026-02-14T18:39:00Z");
   const endTime = new Date("2026-02-18T18:39:00Z");
-  
+
   const questionsVisible = now >= startTime && now <= endTime;
 
   console.log("⏰ TIME DEBUG");
