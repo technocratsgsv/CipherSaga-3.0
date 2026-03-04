@@ -28,4 +28,9 @@ export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
-export const analytics = getAnalytics(app);
+
+// Only initialize analytics on the client side to avoid 'window is not defined' in SSR
+export let analytics: any = null;
+if (typeof window !== 'undefined') {
+  analytics = getAnalytics(app);
+}
