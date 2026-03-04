@@ -23,7 +23,7 @@
                 },
                 body: JSON.stringify({ idToken }),
             });
-            await invalidateAll();
+            window.location.href = "/admin/login";
         } catch (error) {
             console.error("Google login failed:", error);
         } finally {
