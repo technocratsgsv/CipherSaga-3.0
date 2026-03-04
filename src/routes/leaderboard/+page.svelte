@@ -14,6 +14,7 @@
         GlowingStarsDescription,
         GlowingStarsTitle,
     } from "@/components/ui/GlowingStars";
+    import CipherTitle from "$lib/components/Title.svelte";
     const getBgColorFromPosition = (pos: number) => {
         switch (pos) {
             case 0:
@@ -45,11 +46,7 @@
 </script>
 
 <title>Cipher Saga 2.0 - Leaderboard</title>
-<h2
-    class="mt-8 bg-gradient-to-br from-slate-300 to-primary bg-clip-text py-4 text-center text-7xl font-medium tracking-tight text-transparent"
->
-    Leaderboard
-</h2>
+<CipherTitle text="Leaderboard" />
 {#if data.error}
     <div role="alert" class="alert alert-error">
         <svg
