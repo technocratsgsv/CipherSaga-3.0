@@ -5,7 +5,8 @@ import type { Actions, PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ locals }) => {
     // If already verified, go straight to admin
     if (locals.isAdmin) throw redirect(302, '/admin');
-    return { isAdminEmail: locals.isAdminEmail };
+    const isLoggedIn = locals.userID !== null;
+    return { isAdminEmail: locals.isAdminEmail, isLoggedIn };
 };
 
 export const actions: Actions = {
