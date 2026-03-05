@@ -2,6 +2,7 @@
     import { BackgroundBeams } from "@/components/ui/BackgroundBeams";
     import { Button } from "@/components/ui/MovingBorder";
     import Countdown from "svelte-countdown/src/index.js";
+    import CipherTitle from "$lib/components/Title.svelte";
     let showRules = false;
 </script>
 
@@ -19,18 +20,18 @@
                 let:remaining
             >
                 <p
-                    class="relative z-10 mx-auto my-2 max-w-lg text-center font-mono text-sm text-neutral-500"
+                    class="relative z-10 mx-auto my-2 max-w-lg text-center font-mono text- text-neutral-500"
                 >
                     {remaining.days} days, {remaining.hours} hours, {remaining.minutes}
                     minutes, {remaining.seconds} seconds
                 </p>
             </Countdown>
-            <h2 class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-4xl md:text-6xl lg:text-7xl font-bold text-transparent">
-                Cipher Saga 3.0
-            </h2>
+            <p></p>
+                       
+            <CipherTitle text="Cipher Saga 3.0" />
             <p></p>
             <p
-                class="relative z-10 mx-auto my-2 max-w-lg text-center text-sm text-neutral-500"
+                class="relative z-10 mx-auto my-2 max-w-lg text-center text-base text-neutral-500"
             >
                 Get Ready to experience the ultimate challenge of this year!!<br />Think . Connect . Solve
             </p>
