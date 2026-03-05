@@ -194,28 +194,5 @@
                 </div>
             </div>
         </a>
-
-        <a
-            href="/admin/migrate"
-            class="card bg-zinc-950/80 border border-zinc-800 shadow-xl hover:shadow-[0_0_15px_rgba(251,146,60,0.2)] hover:-translate-y-1 hover:border-zinc-600 transition-all duration-300 cursor-pointer backdrop-blur-sm group sm:col-span-2"
-        >
-            <div class="card-body">
-                <h2
-                    class="card-title text-xl text-neutral-200 group-hover:text-orange-400 transition-colors"
-                >
-                    🔄 Database Migration
-                </h2>
-                <p class="text-neutral-400 text-sm">
-                    One-time schema migration tool. Run once to backfill the
-                    teamNames collection.
-                </p>
-                <div class="card-actions justify-end mt-2">
-                    <span
-                        class="btn btn-sm bg-zinc-900 border-zinc-700 text-neutral-300 group-hover:bg-orange-700 group-hover:text-white group-hover:border-orange-600 transition-all"
-                        >Open →</span
-                    >
-                </div>
-            </div>
-        </a>
     </div>
 </div>
