@@ -5,11 +5,19 @@
     import { Motion } from "svelte-motion";
     import { sendErrorToast, sendSuccessToast } from "$lib/toast_utils";
     // import {Google} from 'lucide-svelte';
-    import { IconBrandGithub, IconBrandGoogle, IconBrandOnlyfans } from '@tabler/icons-svelte';
-    import {Label,Input} from '@/components/ui/SignupForm';
-    import {LampEffect} from "@/components/ui/LampEffect";
-    import { GoogleAuthProvider, signInWithPopup , signOut} from 'firebase/auth';
-    import { auth } from '$lib/firebase';
+    import {
+        IconBrandGithub,
+        IconBrandGoogle,
+        IconBrandOnlyfans,
+    } from "@tabler/icons-svelte";
+    import { Label, Input } from "@/components/ui/SignupForm";
+    import { LampEffect } from "@/components/ui/LampEffect";
+    import {
+        GoogleAuthProvider,
+        signInWithPopup,
+        signOut,
+    } from "firebase/auth";
+    import { auth } from "$lib/firebase";
     let isAuthLoading = false;
     import { goto, invalidateAll } from "$app/navigation";
 
@@ -39,8 +47,14 @@
     };
 
     $: accState = getAccountStateFromStatCode(data);
-    // $: accState = data.userID === null ?
-    //     AccountState.GOOGLE_SIGN_IN : (data.userExists === false ? AccountState.USERNAME_NAME : (data.userTeam === undefined ? AccountState.TEAM_SELECT : AccountState.DONE))
+
+    $: {
+        if (data.isAdminEmail && !data.isAdmin) {
+            goto("/admin/login");
+        } else if (data.isAdmin) {
+            goto("/admin");
+        }
+    }
     $: progVal =
         accState === AccountState.GOOGLE_SIGN_IN
             ? 0

@@ -14,6 +14,7 @@ let bannedTeamsLoaded = false;
 const bannedTeamsQuery = adminDB.collection("teams").where("banned", "==", true);
 
 export const handle = sequence(Sentry.sentryHandle(), (async ({ event, resolve }) => {
+    console.log(`[HOOK] Request URL: ${event.url.pathname}`);
     const sessionCookie = event.cookies.get("__session");
 
     // Load banned teams cache on first request

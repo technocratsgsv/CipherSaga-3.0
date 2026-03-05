@@ -4,11 +4,28 @@ import { fail, redirect } from '@sveltejs/kit';
 import { FieldValue } from 'firebase-admin/firestore';
 import type { Actions, PageServerLoad } from './$types';
 
+export interface Question {
+    id: string;
+    prompt: string;
+    answer: string;
+    level: number;
+    comment: string;
+}
+
 export const load: PageServerLoad = async ({ locals }) => {
     requireAdmin(locals);
 
     const snap = await adminDB.collection('levels').orderBy('level').get();
-    const questions = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const questions = snap.docs.map(doc => {
+        const data = doc.data();
+        return {
+            id: doc.id,
+            prompt: data.prompt,
+            answer: data.answer,
+            level: data.level,
+            comment: data.comment || ''
+        } as Question;
+    });
 
     return { locals, questions };
 };
