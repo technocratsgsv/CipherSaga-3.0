@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit';
-import { adminDB } from '@/server/admin';
+import { adminDB } from '$lib/server/admin';
 
 const collectionRef = adminDB.collection('/levels').orderBy('level');
 
