@@ -7,13 +7,13 @@ let loaded = false;
 let questions: any[] = [];
 
 export const load = async ({ locals }: any) => {
-  // Admins can always see all questions
-  if (locals.isAdmin) {
+  // Admins (any admin email) can always see all questions — bypass time gate and team check
+  if (locals.isAdminEmail) {
     const querySnapshot = await collectionRef.get();
     const adminQuestions: any[] = [];
     querySnapshot.docs.forEach((d) => {
       let data = d.data();
-      // Keep answers visible for admin (they see the real data)
+      // Keep answers visible for admin
       adminQuestions.push(data);
     });
     return { locals, questions: adminQuestions };
@@ -26,10 +26,21 @@ export const load = async ({ locals }: any) => {
   const team = await adminDB.collection('/teams').doc(teamId).get();
   const level = team.data()?.level || 0;
 
-  const now = new Date();
-  const startTime = new Date("2026-02-14T18:39:00Z");
-  const endTime = new Date("2026-02-18T18:39:00Z");
+  // Read game times from Firestore siteSettings, fall back to hardcoded defaults
+  let startTime = new Date("2026-02-14T18:39:00Z");
+  let endTime = new Date("2026-02-18T18:39:00Z");
+  try {
+    const settingsDoc = await adminDB.collection('siteSettings').doc('main').get();
+    if (settingsDoc.exists) {
+      const settings = settingsDoc.data() || {};
+      if (settings.gameStartTime) startTime = new Date(settings.gameStartTime);
+      if (settings.gameEndTime) endTime = new Date(settings.gameEndTime);
+    }
+  } catch (e) {
+    // Ignore, use defaults
+  }
 
+  const now = new Date();
   const questionsVisible = now >= startTime && now <= endTime;
 
   console.log("⏰ TIME DEBUG");
@@ -39,7 +50,6 @@ export const load = async ({ locals }: any) => {
   console.log("questionsVisible:", questionsVisible);
 
   if (questionsVisible) {
-
     if (locals.banned) {
       return redirect(302, '/team');
     }
@@ -69,11 +79,7 @@ export const load = async ({ locals }: any) => {
       loaded = true;
     }
 
-    if (
-      !locals.userID ||
-      !locals.userExists ||
-      !locals.userTeam
-    ) {
+    if (!locals.userID || !locals.userExists || !locals.userTeam) {
       return redirect(302, '/ready');
     }
   }

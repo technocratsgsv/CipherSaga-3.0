@@ -49,4 +49,13 @@
         </div>
     {/if}
     <slot />
+
+    {#if data.isAdminEmail && !$page.url.pathname.startsWith("/admin")}
+        <a
+            href="/admin"
+            class="fixed top-6 right-6 z-50 flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-950/90 border border-zinc-700 text-cyan-400 text-sm font-semibold shadow-[0_0_15px_rgba(6,182,212,0.3)] hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:border-cyan-500 hover:text-cyan-300 transition-all duration-300 backdrop-blur-md"
+        >
+            👑 Admin Panel
+        </a>
+    {/if}
 </FirebaseApp>

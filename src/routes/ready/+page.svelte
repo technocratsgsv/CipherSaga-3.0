@@ -47,14 +47,6 @@
     };
 
     $: accState = getAccountStateFromStatCode(data);
-
-    $: {
-        if (data.isAdminEmail && !data.isAdmin) {
-            goto("/admin/login");
-        } else if (data.isAdmin) {
-            goto("/admin");
-        }
-    }
     $: progVal =
         accState === AccountState.GOOGLE_SIGN_IN
             ? 0
@@ -286,6 +278,17 @@
     >
         {progVal}%
     </div>
+
+    {#if data.isAdminEmail}
+        <div class="mt-6 mb-2">
+            <button
+                class="btn btn-sm border-cyan-500/50 text-cyan-400 bg-cyan-950/20 hover:bg-cyan-900/40 hover:border-cyan-400 transition-colors"
+                on:click={() => goto(data.isAdmin ? "/admin" : "/admin/login")}
+            >
+                👑 Enter Admin Panel
+            </button>
+        </div>
+    {/if}
 </center>
 
 {#if accState === AccountState.GOOGLE_SIGN_IN}
