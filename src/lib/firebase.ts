@@ -28,7 +28,7 @@ export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
 
-export let analytics;
+export let analytics: any;
 
 if (browser) {
   import("firebase/analytics").then(({ getAnalytics }) => {

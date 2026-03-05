@@ -1,6 +1,7 @@
 import { sequence } from "@sveltejs/kit/hooks";
 import * as Sentry from "@sentry/sveltekit";
 import { adminAuth, adminDB } from "$lib/server/admin";
+import { ADMIN_EMAILS } from "$lib/server/adminGuard";
 import type { Handle } from "@sveltejs/kit";
 import { PUBLIC_SENTRY_DSN } from '$env/static/public';
 Sentry.init({
@@ -13,6 +14,7 @@ let bannedTeamsLoaded = false;
 const bannedTeamsQuery = adminDB.collection("teams").where("banned", "==", true);
 
 export const handle = sequence(Sentry.sentryHandle(), (async ({ event, resolve }) => {
+    console.log(`[HOOK] Request URL: ${event.url.pathname}`);
     const sessionCookie = event.cookies.get("__session");
 
     // Load banned teams cache on first request
@@ -28,6 +30,10 @@ export const handle = sequence(Sentry.sentryHandle(), (async ({ event, resolve }
         bannedTeamsLoaded = true;
     }
 
+    // Default admin flags
+    event.locals.isAdmin = false;
+    event.locals.isAdminEmail = false;
+
     try {
         if (sessionCookie === undefined) {
             event.locals.userID = null;
@@ -38,6 +44,15 @@ export const handle = sequence(Sentry.sentryHandle(), (async ({ event, resolve }
 
         const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie!);
         event.locals.userID = decodedClaims.uid;
+
+        // Check admin email
+        const email = decodedClaims.email ?? '';
+        const isAdminEmail = ADMIN_EMAILS.includes(email);
+        event.locals.isAdminEmail = isAdminEmail;
+
+        // Admin is fully verified only if email matches AND admin_verified cookie is set
+        const adminVerified = event.cookies.get('admin_verified');
+        event.locals.isAdmin = isAdminEmail && adminVerified === 'true';
 
         // Query user document directly (no more userIndex caching)
         const docRef = adminDB.collection('users').doc(event.locals.userID);
@@ -56,12 +71,21 @@ export const handle = sequence(Sentry.sentryHandle(), (async ({ event, resolve }
         }
 
         return resolve(event);
-    } catch (e) {
-        console.error(e);
+    } catch (e: any) {
+        // If the cookie verification fails (e.g. auth/session-cookie-expired or revoked)
+        // We should clear the cookie so the user isn't stuck in a crash loop and is forced to re-login.
+        if (e.code === 'auth/session-cookie-expired' || e.code === 'auth/session-cookie-revoked' || sessionCookie) {
+            event.cookies.delete('__session', { path: '/' });
+            event.cookies.delete('admin_verified', { path: '/' });
+        }
+        console.error("Firebase Auth Error in hooks:", e.message);
+
         event.locals.userID = null;
         event.locals.userExists = false;
         event.locals.userTeam = null;
         event.locals.banned = false;
+        event.locals.isAdmin = false;
+        event.locals.isAdminEmail = false;
         return resolve(event);
     }
 }) satisfies Handle);

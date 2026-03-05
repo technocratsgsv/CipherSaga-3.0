@@ -14,6 +14,8 @@
     import {
         IconCoin as Coin,
         IconAffiliate as Affiliate,
+        IconCoins,
+        IconUsers,
     } from "@tabler/icons-svelte";
     import { Input } from "@/components/ui/SignupForm";
     import { sendErrorToast, sendSuccessToast } from "@/toast_utils";
