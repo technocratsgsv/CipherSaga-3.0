@@ -398,14 +398,36 @@
                                             ></span
                                         >
                                         <span
-                                            >📲 Scanned by: <span
-                                                class="text-neutral-300 font-medium"
-                                                >{q.scannedByCount} team{q.scannedByCount !==
-                                                1
-                                                    ? "s"
-                                                    : ""}</span
-                                            ></span
-                                        >
+                                            >📲 Scanned by:
+                                            {#if q.scannedByCount === 0}
+                                                <span class="text-neutral-600"
+                                                    >—</span
+                                                >
+                                            {:else}
+                                                <details
+                                                    class="inline-block align-middle"
+                                                >
+                                                    <summary
+                                                        class="cursor-pointer text-cyan-400 font-medium hover:text-cyan-300 transition-colors list-none inline"
+                                                    >
+                                                        {q.scannedByCount} team{q.scannedByCount !==
+                                                        1
+                                                            ? "s"
+                                                            : ""} ▾
+                                                    </summary>
+                                                    <div
+                                                        class="flex flex-wrap gap-1 mt-1.5"
+                                                    >
+                                                        {#each q.scannedByTeams as teamName}
+                                                            <span
+                                                                class="badge badge-xs bg-cyan-900/30 text-cyan-400 border-cyan-800 font-mono"
+                                                                >{teamName}</span
+                                                            >
+                                                        {/each}
+                                                    </div>
+                                                </details>
+                                            {/if}
+                                        </span>
                                         {#if q.isSolved && q.solvedByTeamName}
                                             <span
                                                 >🏆 Solved by: <span

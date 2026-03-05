@@ -22,9 +22,9 @@ export const load: PageServerLoad = async ({ locals }) => {
 
     const questions = bqSnap.docs.map(doc => {
         const data = doc.data();
-        const scannedByCount = allTeams.filter(t =>
-            (t.scannedQRCodes || []).includes(data.qrString)
-        ).length;
+        const scannedByTeams = teamsSnap.docs
+            .filter(doc => (doc.data().scannedQRCodes || []).includes(data.qrString))
+            .map(doc => doc.data().teamName || doc.id);
 
         return {
             id: doc.id,
@@ -40,7 +40,8 @@ export const load: PageServerLoad = async ({ locals }) => {
             solvedByTeamId: data.solvedByTeamId || null,
             solvedByTeamName: data.solvedByTeamId ? (teamMap[data.solvedByTeamId] || data.solvedByTeamId) : null,
             solvedAt: data.solvedAt ? data.solvedAt.toDate().toISOString() : null,
-            scannedByCount,
+            scannedByTeams,
+            scannedByCount: scannedByTeams.length,
         };
     });
 
