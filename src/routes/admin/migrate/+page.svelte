@@ -51,7 +51,7 @@
         <h1
             class="text-3xl font-bold mb-4 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-transparent pb-1"
         >
-            ⚠ Schema Migration
+             Schema Migration
         </h1>
         <p class="text-neutral-400 mb-8">
             This tool will scan all existing teams in the <code

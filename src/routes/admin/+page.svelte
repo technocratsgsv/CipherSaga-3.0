@@ -23,7 +23,7 @@
             <h1
                 class="text-4xl font-bold bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-transparent pb-1"
             >
-                ⚙️ Admin Dashboard
+                 Admin Dashboard
             </h1>
             <p class="text-neutral-400 mt-1">CipherSaga Control Panel</p>
         </div>
@@ -31,7 +31,7 @@
             <a
                 href="/ready"
                 class="btn btn-ghost btn-sm text-cyan-400 hover:text-white hover:bg-zinc-800 border border-zinc-700 hover:border-zinc-600 transition-all"
-                >🎮 Go to Website</a
+                > Go to Website</a
             >
             <a
                 href="/"
@@ -56,7 +56,7 @@
         <div
             class="stat bg-zinc-950/80 border border-zinc-800 rounded-2xl shadow-xl backdrop-blur-sm"
         >
-            <div class="stat-figure text-primary text-3xl">❓</div>
+            <div class="stat-figure text-primary text-3xl"></div>
             <div class="stat-title text-neutral-400 text-xs">Questions</div>
             <div class="stat-value text-2xl text-primary">
                 {stats.totalQuestions}
@@ -65,7 +65,7 @@
         <div
             class="stat bg-zinc-950/80 border border-zinc-800 rounded-2xl shadow-xl backdrop-blur-sm"
         >
-            <div class="stat-figure text-cyan-400 text-3xl">👥</div>
+            <div class="stat-figure text-cyan-400 text-3xl"></div>
             <div class="stat-title text-neutral-400 text-xs">Teams</div>
             <div class="stat-value text-2xl text-cyan-400">
                 {stats.totalTeams}
@@ -74,7 +74,7 @@
         <div
             class="stat bg-zinc-950/80 border border-zinc-800 rounded-2xl shadow-xl backdrop-blur-sm"
         >
-            <div class="stat-figure text-red-500 text-3xl">🚫</div>
+            <div class="stat-figure text-red-500 text-3xl"></div>
             <div class="stat-title text-neutral-400 text-xs">Banned</div>
             <div class="stat-value text-2xl text-red-500">
                 {stats.bannedTeams}
@@ -83,7 +83,7 @@
         <div
             class="stat bg-zinc-950/80 border border-zinc-800 rounded-2xl shadow-xl backdrop-blur-sm"
         >
-            <div class="stat-figure text-amber-400 text-3xl">🎯</div>
+            <div class="stat-figure text-amber-400 text-3xl"></div>
             <div class="stat-title text-neutral-400 text-xs">Bonus Qs</div>
             <div class="stat-value text-2xl text-amber-400">
                 {stats.totalBonus}
@@ -92,7 +92,7 @@
         <div
             class="stat bg-zinc-950/80 border border-zinc-800 rounded-2xl shadow-xl backdrop-blur-sm"
         >
-            <div class="stat-figure text-emerald-400 text-3xl">✅</div>
+            <div class="stat-figure text-emerald-400 text-3xl"></div>
             <div class="stat-title text-neutral-400 text-xs">Solved Bonus</div>
             <div class="stat-value text-2xl text-emerald-400">
                 {stats.solvedBonus}
@@ -112,7 +112,7 @@
                 <h2
                     class="card-title text-2xl text-neutral-200 group-hover:text-primary transition-colors"
                 >
-                    📋 Question Management
+                     Question Management
                 </h2>
                 <p class="text-neutral-400">
                     Add, edit, or delete main game questions. View answers and
@@ -135,7 +135,7 @@
                 <h2
                     class="card-title text-2xl text-neutral-200 group-hover:text-cyan-400 transition-colors"
                 >
-                    👥 Team Management
+                     Team Management
                 </h2>
                 <p class="text-neutral-400">
                     View all teams, ban/unban teams, or delete teams entirely.
@@ -157,7 +157,7 @@
                 <h2
                     class="card-title text-2xl text-neutral-200 group-hover:text-amber-400 transition-colors"
                 >
-                    🎯 Bonus Question Management
+                     Bonus Question Management
                 </h2>
                 <p class="text-neutral-400">
                     Add, edit, hide/show bonus questions. See who scanned and
@@ -180,7 +180,7 @@
                 <h2
                     class="card-title text-2xl text-neutral-200 group-hover:text-violet-400 transition-colors"
                 >
-                    ⚙️ Site Settings
+                     Site Settings
                 </h2>
                 <p class="text-neutral-400">
                     Control game start/end times and enable maintenance mode for

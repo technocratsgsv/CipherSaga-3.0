@@ -34,7 +34,7 @@
             <h1
                 class="text-3xl font-bold mt-1 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-transparent pb-1"
             >
-                👥 Team Management
+                 Team Management
             </h1>
             <p class="text-neutral-500 mt-1 text-sm">
                 {data.teams.length} teams total
@@ -54,7 +54,7 @@
             <div
                 class="alert bg-emerald-950/50 border border-emerald-900 text-emerald-200 mb-4 shadow-lg backdrop-blur-md"
             >
-                <span>✅ Team updated successfully.</span>
+                <span> Team updated successfully.</span>
             </div>
         {/if}
         {#if form?.error}
@@ -109,7 +109,7 @@
                                 {#if team.gsv_verified}
                                     <span
                                         class="badge badge-sm bg-emerald-900/30 text-emerald-400 border-emerald-800"
-                                        >✓ GSV</span
+                                        > GSV</span
                                     >
                                 {:else}
                                     <span
@@ -147,7 +147,7 @@
                                             <button
                                                 type="submit"
                                                 class="btn btn-xs bg-emerald-950/40 hover:bg-emerald-900/60 text-emerald-400 border-emerald-900/50 hover:border-emerald-500/50 transition-colors"
-                                                >✅ Unban</button
+                                                > Unban</button
                                             >
                                         </form>
                                     {:else}
@@ -164,7 +164,7 @@
                                             <button
                                                 type="submit"
                                                 class="btn btn-xs bg-orange-950/40 hover:bg-orange-900/60 text-orange-400 border-orange-900/50 hover:border-orange-500/50 transition-colors"
-                                                >🚫 Ban</button
+                                                > Ban</button
                                             >
                                         </form>
                                     {/if}
@@ -191,7 +191,7 @@
                                                         .closest("form")
                                                         ?.submit();
                                                 }
-                                            }}>🗑️ Delete</button
+                                            }}> Delete</button
                                         >
                                     </form>
                                 </div>

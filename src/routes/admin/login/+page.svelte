@@ -51,7 +51,7 @@
                 <h1
                     class="text-3xl font-bold tracking-tight bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-transparent"
                 >
-                    🔐 Admin Access
+                     Admin Access
                 </h1>
                 <p class="text-neutral-400 mt-1 text-sm">
                     CipherSaga Control Panel
@@ -101,7 +101,7 @@
                     class="alert bg-red-950/50 border border-red-900 text-red-200"
                 >
                     <span
-                        >⛔ Access Denied. Your Google account is not authorised
+                        > Access Denied. Your Google account is not authorised
                         as an admin.</span
                     >
                 </div>

@@ -39,14 +39,14 @@
             <h1
                 class="text-3xl font-bold mt-1 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-transparent pb-1"
             >
-                📋 Question Management
+                 Question Management
             </h1>
         </div>
         <button
             class="btn btn-sm bg-primary text-black hover:bg-primary/80 border-none transition-colors"
             on:click={() => (showCreateForm = !showCreateForm)}
         >
-            {showCreateForm ? "✕ Cancel" : "+ Add Question"}
+            {showCreateForm ? " Cancel" : "+ Add Question"}
         </button>
     </div>
 
@@ -56,7 +56,7 @@
             <div
                 class="alert bg-emerald-950/50 border border-emerald-900 text-emerald-200 mb-4 shadow-lg backdrop-blur-md"
             >
-                <span>✅ Operation successful!</span>
+                <span> Operation successful!</span>
             </div>
         {/if}
         {#if form?.createError || form?.updateError || form?.deleteError}
@@ -310,7 +310,7 @@
                                         <button
                                             class="btn btn-xs bg-zinc-800 hover:bg-zinc-700 text-neutral-300 border-zinc-700 hover:border-zinc-600 transition-colors"
                                             on:click={() => startEdit(q)}
-                                            >✏️ Edit</button
+                                            > Edit</button
                                         >
                                         <form
                                             method="POST"
@@ -337,7 +337,7 @@
                                                             .closest("form")
                                                             ?.submit();
                                                     }
-                                                }}>🗑️ Delete</button
+                                                }}> Delete</button
                                             >
                                         </form>
                                     </div>

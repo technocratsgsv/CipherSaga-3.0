@@ -27,7 +27,7 @@
             <h1
                 class="text-3xl font-bold mt-1 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-transparent pb-1"
             >
-                ⚙️ Site Settings
+                 Site Settings
             </h1>
             <p class="text-neutral-500 text-sm mt-1">
                 Control game timing and maintenance mode
@@ -39,7 +39,7 @@
             <div
                 class="alert bg-emerald-950/50 border border-emerald-900 text-emerald-200 mb-6 shadow-lg backdrop-blur-md"
             >
-                <span>✅ Settings saved successfully!</span>
+                <span> Settings saved successfully!</span>
             </div>
         {/if}
         {#if form?.error}
@@ -62,7 +62,7 @@
             >
                 <div class="card-body">
                     <h2 class="card-title text-neutral-200 text-lg mb-1">
-                        🕐 Game Time Window
+                         Game Time Window
                     </h2>
                     <p class="text-neutral-500 text-sm mb-4">
                         Players can only access questions between these times.
@@ -111,7 +111,7 @@
             >
                 <div class="card-body">
                     <h2 class="card-title text-neutral-200 text-lg mb-1">
-                        🔧 Maintenance Mode
+                         Maintenance Mode
                     </h2>
                     <p class="text-neutral-500 text-sm mb-4">
                         When enabled, the play page will show a maintenance
