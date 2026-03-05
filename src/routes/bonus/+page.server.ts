@@ -3,8 +3,32 @@ import { adminDB } from '$lib/server/admin';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
+    // Admins see ALL bonus questions with full data
+    if (locals.isAdminEmail) {
+        const qSnapshot = await adminDB.collection('bonusQuestions').get();
+        const questions = qSnapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                title: data.title,
+                description: data.description,
+                points: data.points,
+                isSolved: data.isSolved || false,
+                solvedByTeamId: data.solvedByTeamId || null,
+                isUnlocked: true,
+                isSolvedByMe: false,
+                hint: data.hint,
+                isVisible: data.isVisible,
+                negative_points: data.negative_points,
+                answer: data.answer, // admins see answers
+            };
+        });
+        return { questions, userTeam: locals.userTeam };
+    }
+
     // 1. Verify Authentication
     if (!locals.userID || !locals.userTeam) {
+
         // If not in a team, they can't see bonuses? Or maybe just read-only?
         // Let's assume they need to be in a team.
         // We can return empty or redirect.

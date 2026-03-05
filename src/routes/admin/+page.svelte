@@ -27,11 +27,16 @@
             </h1>
             <p class="text-neutral-400 mt-1">CipherSaga Control Panel</p>
         </div>
-        <div class="flex gap-2">
+        <div class="flex gap-2 flex-wrap justify-end">
+            <a
+                href="/ready"
+                class="btn btn-ghost btn-sm text-cyan-400 hover:text-white hover:bg-zinc-800 border border-zinc-700 hover:border-zinc-600 transition-all"
+                >🎮 Go to Website</a
+            >
             <a
                 href="/"
                 class="btn btn-ghost btn-sm text-neutral-300 hover:text-white hover:bg-zinc-800"
-                >← Back to Site</a
+                >← Home</a
             >
             <a
                 href="/api/auth"
@@ -46,28 +51,52 @@
 
     <!-- Stats row -->
     <div
-        class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10 relative z-10 max-w-5xl mx-auto"
+        class="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-10 relative z-10 max-w-5xl mx-auto"
     >
         <div
             class="stat bg-zinc-950/80 border border-zinc-800 rounded-2xl shadow-xl backdrop-blur-sm"
         >
             <div class="stat-figure text-primary text-3xl">❓</div>
-            <div class="stat-title text-neutral-400">Total Questions</div>
-            <div class="stat-value text-primary">{stats.totalQuestions}</div>
+            <div class="stat-title text-neutral-400 text-xs">Questions</div>
+            <div class="stat-value text-2xl text-primary">
+                {stats.totalQuestions}
+            </div>
         </div>
         <div
             class="stat bg-zinc-950/80 border border-zinc-800 rounded-2xl shadow-xl backdrop-blur-sm"
         >
             <div class="stat-figure text-cyan-400 text-3xl">👥</div>
-            <div class="stat-title text-neutral-400">Total Teams</div>
-            <div class="stat-value text-cyan-400">{stats.totalTeams}</div>
+            <div class="stat-title text-neutral-400 text-xs">Teams</div>
+            <div class="stat-value text-2xl text-cyan-400">
+                {stats.totalTeams}
+            </div>
         </div>
         <div
             class="stat bg-zinc-950/80 border border-zinc-800 rounded-2xl shadow-xl backdrop-blur-sm"
         >
             <div class="stat-figure text-red-500 text-3xl">🚫</div>
-            <div class="stat-title text-neutral-400">Banned Teams</div>
-            <div class="stat-value text-red-500">{stats.bannedTeams}</div>
+            <div class="stat-title text-neutral-400 text-xs">Banned</div>
+            <div class="stat-value text-2xl text-red-500">
+                {stats.bannedTeams}
+            </div>
+        </div>
+        <div
+            class="stat bg-zinc-950/80 border border-zinc-800 rounded-2xl shadow-xl backdrop-blur-sm"
+        >
+            <div class="stat-figure text-amber-400 text-3xl">🎯</div>
+            <div class="stat-title text-neutral-400 text-xs">Bonus Qs</div>
+            <div class="stat-value text-2xl text-amber-400">
+                {stats.totalBonus}
+            </div>
+        </div>
+        <div
+            class="stat bg-zinc-950/80 border border-zinc-800 rounded-2xl shadow-xl backdrop-blur-sm"
+        >
+            <div class="stat-figure text-emerald-400 text-3xl">✅</div>
+            <div class="stat-title text-neutral-400 text-xs">Solved Bonus</div>
+            <div class="stat-value text-2xl text-emerald-400">
+                {stats.solvedBonus}
+            </div>
         </div>
     </div>
 
@@ -86,8 +115,8 @@
                     📋 Question Management
                 </h2>
                 <p class="text-neutral-400">
-                    Add, edit, or delete questions. View answers and manage
-                    levels.
+                    Add, edit, or delete main game questions. View answers and
+                    manage levels.
                 </p>
                 <div class="card-actions justify-end mt-2">
                     <span
@@ -115,6 +144,75 @@
                     <span
                         class="btn btn-sm bg-zinc-900 border-zinc-700 text-neutral-300 group-hover:bg-cyan-600 group-hover:text-white group-hover:border-cyan-500 transition-all"
                         >Manage →</span
+                    >
+                </div>
+            </div>
+        </a>
+
+        <a
+            href="/admin/bonus"
+            class="card bg-zinc-950/80 border border-zinc-800 shadow-xl hover:shadow-[0_0_15px_rgba(251,191,36,0.25)] hover:-translate-y-1 hover:border-zinc-600 transition-all duration-300 cursor-pointer backdrop-blur-sm group"
+        >
+            <div class="card-body">
+                <h2
+                    class="card-title text-2xl text-neutral-200 group-hover:text-amber-400 transition-colors"
+                >
+                    🎯 Bonus Question Management
+                </h2>
+                <p class="text-neutral-400">
+                    Add, edit, hide/show bonus questions. See who scanned and
+                    solved each one.
+                </p>
+                <div class="card-actions justify-end mt-2">
+                    <span
+                        class="btn btn-sm bg-zinc-900 border-zinc-700 text-neutral-300 group-hover:bg-amber-500 group-hover:text-black group-hover:border-amber-400 transition-all"
+                        >Manage →</span
+                    >
+                </div>
+            </div>
+        </a>
+
+        <a
+            href="/admin/settings"
+            class="card bg-zinc-950/80 border border-zinc-800 shadow-xl hover:shadow-[0_0_15px_rgba(167,139,250,0.3)] hover:-translate-y-1 hover:border-zinc-600 transition-all duration-300 cursor-pointer backdrop-blur-sm group"
+        >
+            <div class="card-body">
+                <h2
+                    class="card-title text-2xl text-neutral-200 group-hover:text-violet-400 transition-colors"
+                >
+                    ⚙️ Site Settings
+                </h2>
+                <p class="text-neutral-400">
+                    Control game start/end times and enable maintenance mode for
+                    players.
+                </p>
+                <div class="card-actions justify-end mt-2">
+                    <span
+                        class="btn btn-sm bg-zinc-900 border-zinc-700 text-neutral-300 group-hover:bg-violet-600 group-hover:text-white group-hover:border-violet-500 transition-all"
+                        >Configure →</span
+                    >
+                </div>
+            </div>
+        </a>
+
+        <a
+            href="/admin/migrate"
+            class="card bg-zinc-950/80 border border-zinc-800 shadow-xl hover:shadow-[0_0_15px_rgba(251,146,60,0.2)] hover:-translate-y-1 hover:border-zinc-600 transition-all duration-300 cursor-pointer backdrop-blur-sm group sm:col-span-2"
+        >
+            <div class="card-body">
+                <h2
+                    class="card-title text-xl text-neutral-200 group-hover:text-orange-400 transition-colors"
+                >
+                    🔄 Database Migration
+                </h2>
+                <p class="text-neutral-400 text-sm">
+                    One-time schema migration tool. Run once to backfill the
+                    teamNames collection.
+                </p>
+                <div class="card-actions justify-end mt-2">
+                    <span
+                        class="btn btn-sm bg-zinc-900 border-zinc-700 text-neutral-300 group-hover:bg-orange-700 group-hover:text-white group-hover:border-orange-600 transition-all"
+                        >Open →</span
                     >
                 </div>
             </div>
