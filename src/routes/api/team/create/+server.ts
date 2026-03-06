@@ -21,6 +21,9 @@ export const POST: RequestHandler = async ({ request, cookies, locals }: any) =>
     // We do this inside the transaction or check beforehand.
     // To minimize transaction contention, we can check beforehand (read), but must strict verify in transaction (create).
 
+    // Fetch user record OUTSIDE the transaction to prevent external API calls inside the transaction block
+    const userRecord = await adminAuth.getUser(locals.userID!);
+
     try {
         await adminDB.runTransaction(async (transaction) => {
             // 1. Uniqueness Check for Name
@@ -53,8 +56,7 @@ export const POST: RequestHandler = async ({ request, cookies, locals }: any) =>
             const teamID = newTeamRef.id;
 
             const teamMembers = [locals.userID,];
-            const userRecord = await adminAuth.getUser(locals.userID!);
-            let data = {
+            let data: any = {
                 created: FieldValue.serverTimestamp(),
                 last_change: FieldValue.serverTimestamp(),
                 teamName,

@@ -58,6 +58,7 @@
     async function signInWithGoogle() {
         isAuthLoading = true;
         const provider = new GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: "select_account" });
         const credential = await signInWithPopup(auth, provider);
         const idToken = await credential.user.getIdToken();
         const res = await fetch("/api/auth", {
@@ -410,6 +411,14 @@
             on:click={() => showModal("join_team_modal")}
         >
             Join team
+        </button>
+
+        <br />
+        <button
+            class="relative z-20 mt-4 btn btn-wide btn-ghost border border-zinc-700 text-neutral-400 hover:text-white"
+            on:click={signoutSSR}
+        >
+            Log out
         </button>
     </center>
 {/if}
