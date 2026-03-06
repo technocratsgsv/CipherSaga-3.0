@@ -21,7 +21,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     const teamId = locals.userTeam;
 
     try {
-        await adminDB.runTransaction(async (transaction) => {
+        const result = await adminDB.runTransaction(async (transaction) => {
             const questionRef = adminDB.collection('bonusQuestions').doc(questionId);
             const teamRef = adminDB.collection('teams').doc(teamId);
 
@@ -48,7 +48,13 @@ export const POST: RequestHandler = async ({ request, locals }) => {
             const correctAnswer = (data.answer || '').trim().toLowerCase();
 
             if (submission !== correctAnswer) {
-                throw new Error('Incorrect answer.');
+                const penalty = Math.abs(data.negative_points || 0);
+                if (penalty > 0) {
+                    transaction.update(teamRef, {
+                        bonusPoints: FieldValue.increment(-penalty)
+                    });
+                }
+                return { correct: false, penalty };
             }
 
             // 5. Success! Update question and team
@@ -63,9 +69,14 @@ export const POST: RequestHandler = async ({ request, locals }) => {
             transaction.update(teamRef, {
                 bonusPoints: FieldValue.increment(pointsToAdd)
             });
+
+            return { correct: true, pointsToAdd };
         });
 
-        return json({ success: true, message: 'Correct answer! Points added.' });
+        if (!result.correct) {
+            return json({ success: false, message: `Incorrect answer. Penalty: -${result.penalty} pts.` }, { status: 400 });
+        }
+        return json({ success: true, message: `Correct answer! +${result.pointsToAdd} points added.` });
 
     } catch (err: any) {
         // Distinguish between handled errors and system errors
