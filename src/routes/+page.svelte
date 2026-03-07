@@ -14,7 +14,7 @@
         <BackgroundBeams />
         <div class="px-8 md:px-16 lg:px-32">
             <Countdown
-                from="2026-04-10 23:59:00"
+                from="2026-03-10 23:59:00"
                 dateFormat="YYYY-MM-DD HH:mm:ss"
                 zone="Asia/Kolkata"
                 let:remaining
@@ -99,10 +99,30 @@
                             during EPITOME, the annual techno-management fest of Gati Shakti Vishwavidyalaya.
                             Participants will team up to tackle a series of
                             challenging levels, deciphering clues and solving
-                            riddles to progress. The event will test their wit,
-                            collaboration, and problem-solving skills, which
-                            will probably leave everyone thrilled and eager for
-                            more.
+                            riddles to progress.
+                            This edition has QR hunt implemented as a new feature.
+                            The event will test their wit,collaboration, and 
+                            problem-solving skills, which will probably leave 
+                            everyone thrilled and eager for more.
+                        </p>
+                    </div>
+                    <div class="pb-[3vh]">
+                        <h2
+                            class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-2xl font-bold text-transparent pb-[1vh]"
+                        >
+                            What is QR Hunt?
+                        </h2>
+                        <p></p>
+                        <p
+                            class="relative z-10 text-justify text-sm text-neutral-400"
+                        >
+                            QR Hunt is a new and exciting feature where players receive 
+                            bonus questions that contain hints guiding them to strategically 
+                            placed QR codes. By scanning these codes, participants unlock 
+                            deeper questions and additional clues that lead them closer to 
+                            the final solution. Teams must solve each step of the hunt before 
+                            their competitors to reach the final answer and earn valuable 
+                            bonus marks.
                         </p>
                     </div>
                     <div class="pb-[3vh]">
@@ -357,21 +377,6 @@
                     <div class="pb-[4vh]">
                         <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-4">
                             <div class="flex flex-col items-center">
-                                <a href="">
-                                    <img src="https://i.ibb.co/whYZ0Ws3/Whats-App-Image-2025-03-13-at-9-40-35-PM.jpg" alt="Soham Wani" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
-                                    <h2
-                                        class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
-                                    >
-                                        Soham Wani
-                                    </h2>
-                                    <p
-                                        class="relative z-10 text-center text-sm text-neutral-400 pb-[1vh]"
-                                    >
-                                        (Event Head)
-                                    </p></a
-                                >
-                            </div>
-                            <div class="flex flex-col items-center">
                                 <a href="https://www.linkedin.com/in/shreya-mohanty-755529296/">
                                     <img src="https://i.ibb.co/d4v8xBmj/IMG-20250314-WA0093.jpg" alt="Shreya Mohanty" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
                                     <h2
@@ -397,7 +402,108 @@
                                     <p
                                         class="relative z-10 text-center text-sm text-neutral-400 pb-[1vh]"
                                     >
-                                        (Volunteer)
+                                        (Advisor)
+                                    </p></a
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pb-[3vh]">
+                        <h2
+                            class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-3xl font-bold text-transparent pb-[1vh]"
+                        >
+                            Contributors
+                        </h2>
+                    </div>
+                    <div class="pb-[4vh]">
+                        <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="flex flex-col items-center">
+                                <a href="">
+                                    <img src="https://i.ibb.co/v4zDfZJd/Whats-App-Image-2026-03-06-at-6-30-15-PM.jpg" alt="Pratik Ranjan" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+                                    <h2
+                                        class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
+                                    >
+                                        Pratik Ranjan
+                                    </h2>
+                                    <p
+                                        class="relative z-10 text-center text-sm text-neutral-400 pb-[1vh]"
+                                    >
+                                        (Contributor)
+                                    </p></a
+                                >
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <a href="">
+                                    <img src="https://i.ibb.co/LzL7XyXf/Whats-App-Image-2026-03-06-at-6-30-22-PM.jpg" alt="Anmol Gupta" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+                                    <h2
+                                        class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
+                                    >
+                                        Anmol Gupta
+                                    </h2>
+                                    <p
+                                        class="relative z-10 text-center text-sm text-neutral-400 pb-[1vh]"
+                                    >
+                                        (Contributor)
+                                    </p></a
+                                >
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <a href="">
+                                    <img src="https://i.ibb.co/wF61NBtT/Whats-App-Image-2026-03-06-at-8-23-35-PM.jpg" alt="Trisha Patel" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+                                    <h2
+                                        class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
+                                    >
+                                        Trisha Patel
+                                    </h2>
+                                    <p
+                                        class="relative z-10 text-center text-sm text-neutral-400 pb-[1vh]"
+                                    >
+                                        (Contributor)
+                                    </p></a
+                                >
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <a href="https://www.linkedin.com/in/prashant-panchal-7aa5402a0/">
+                                    <img src="https://i.ibb.co/yKTmJsy/Whats-App-Image-2026-03-06-at-7-28-59-PM.jpg" alt="Prashant Panchal" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+                                    <h2
+                                        class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
+                                    >
+                                        Prashant Panchal
+                                    </h2>
+                                    <p
+                                        class="relative z-10 text-center text-sm text-neutral-400 pb-[1vh]"
+                                    >
+                                        (Contributor)
+                                    </p></a
+                                >
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <a href="">
+                                    <img src="https://i.ibb.co/VpN1bb47/Whats-App-Image-2026-03-06-at-7-00-20-PM.jpg" alt="Neeraj" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+                                    <h2
+                                        class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
+                                    >
+                                        Neeraj
+                                    </h2>
+                                    <p
+                                        class="relative z-10 text-center text-sm text-neutral-400 pb-[1vh]"
+                                    >
+                                        (Contributor)
+                                    </p></a
+                                >
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <a href="">
+                                    <img src="https://i.ibb.co/VpN1bb47/Whats-App-Image-2026-03-06-at-7-00-20-PM.jpg" alt="Devesh Kumar" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+                                    <h2
+                                        class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
+                                    >
+                                        Devesh Kumar
+                                    </h2>
+                                    <p
+                                        class="relative z-10 text-center text-sm text-neutral-400 pb-[1vh]"
+                                    >
+                                        (Contributor)
                                     </p></a
                                 >
                             </div>
@@ -444,6 +550,21 @@
                             </div>
                             <div class="flex flex-col items-center">
                                 <a href="">
+                                    <img src="https://i.ibb.co/whYZ0Ws3/Whats-App-Image-2025-03-13-at-9-40-35-PM.jpg" alt="Soham Wani" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+                                    <h2
+                                        class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
+                                    >
+                                        Soham Wani
+                                    </h2>
+                                    <p
+                                        class="relative z-10 text-center text-sm text-neutral-400 pb-[1vh]"
+                                    >
+                                        (Founding Lead)
+                                    </p></a
+                                >
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <a href="">
                                     <img src="https://i.ibb.co/qM2wVX1z/Logo.png" alt="TechnoCrats" class="w-20 h-20 rounded-full mb-2 mx-auto" />
                                     <h2
                                         class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
@@ -463,7 +584,7 @@
                         <h2
                             class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-l font-bold text-transparent pb-[1vh]"
                         >
-                            Also a special thanks to Student Cell @ GSV and Epitome'25 organising committee for supoorting us throughout
+                            Also a special thanks to Student Cell @ GSV and Epitome'26 organising committee for supoorting us throughout
                         </h2>
                     </div>
                 </div>
