@@ -89,8 +89,8 @@ export const load: PageServerLoad = async ({ locals }) => {
     };
   }
 
-  let startTime = new Date("2026-02-14T18:39:00Z");
-  let endTime = new Date("2026-02-18T18:39:00Z");
+  let startTime = new Date("2026-03-10T06:30:00Z");
+  let endTime = new Date("2026-03-13T06:30:00Z");
 
   try {
     const settingsDoc = await adminDB

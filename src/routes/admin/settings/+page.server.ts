@@ -7,8 +7,8 @@ export const load: PageServerLoad = async ({ locals }) => {
     requireAdmin(locals);
 
     let settings = {
-        gameStartTime: '2026-02-14T18:39',
-        gameEndTime: '2026-02-18T18:39',
+        gameStartTime: '2026-03-10T06:30:00Z',
+        gameEndTime: '2026-03-13T06:30:00Z',
         maintenanceMode: false,
         maintenanceMessage: 'The game is currently under maintenance. Please check back soon!',
     };

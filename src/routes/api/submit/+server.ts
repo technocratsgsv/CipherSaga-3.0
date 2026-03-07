@@ -65,8 +65,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     const level = teamData?.level || 0;
 
     const now = new Date();
-    const startTime = new Date("2025-03-18T18:39:00Z");
-    const endTime = new Date("2025-03-22T18:29:00Z");
+    const startTime = new Date("2026-03-10T06:30:00Z");
+    const endTime = new Date("2026-03-13T06:30:00Z");
 
     const questionsVisible = now >= startTime && now <= endTime;
     const isAdmin = locals.isAdminEmail;

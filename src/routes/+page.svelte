@@ -14,7 +14,7 @@
         <BackgroundBeams />
         <div class="px-8 md:px-16 lg:px-32">
             <Countdown
-                from="2026-03-10 23:59:00"
+                from="2026-03-10 12:00:00"
                 dateFormat="YYYY-MM-DD HH:mm:ss"
                 zone="Asia/Kolkata"
                 let:remaining
@@ -54,6 +54,14 @@
                     onClick={() => (showRules = !showRules)}
                 >
                     Read Me
+                </Button>
+
+                <Button
+                    borderRadius="0.75rem"
+                    className="bg-white-300 text-white border-slate-800 text-sm font-bold"
+                    onClick={() => window.open("https://drive.google.com/file/d/1uzWoq9chyor-pr8JGktyJfjJWB1I1qLE/view?usp=sharing", "_blank")}
+                >
+                    Rulebook
                 </Button>
             </div>
         </div>
@@ -182,7 +190,7 @@
                             </li>
                             <li>
                                 Make sure you have joined the <a
-                                    href="https://discord.gg/Dm5zy3EaE4"
+                                    href="https://discord.gg/bTjYmfUw"
                                     >Discord server</a
                                 > as well.
                             </li>
@@ -494,7 +502,7 @@
                             </div>
                             <div class="flex flex-col items-center">
                                 <a href="">
-                                    <img src="https://i.ibb.co/VpN1bb47/Whats-App-Image-2026-03-06-at-7-00-20-PM.jpg" alt="Devesh Kumar" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+                                    <img src="https://i.ibb.co/r23hkQNv/Whats-App-Image-2026-03-06-at-21-24-22.jpg" alt="Devesh Kumar" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
                                     <h2
                                         class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
                                     >
@@ -533,21 +541,7 @@
                                     </p></a
                                 >
                             </div>
-                            <div class="flex flex-col items-center">
-                                <a href="https://www.linkedin.com/in/dr-sonu-lamba-2a385694/">
-                                    <img src="https://i.ibb.co/6cfXncPm/1736622240889.jpg" alt="Dr. Sonu Lamba" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
-                                    <h2
-                                        class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
-                                    >
-                                        Dr. Sonu Lamba
-                                    </h2>
-                                    <p
-                                        class="relative z-10 text-center text-sm text-neutral-400 pb-[1vh]"
-                                    >
-                                        (Faculty Advisor)
-                                    </p></a
-                                >
-                            </div>
+                        
                             <div class="flex flex-col items-center">
                                 <a href="">
                                     <img src="https://i.ibb.co/whYZ0Ws3/Whats-App-Image-2025-03-13-at-9-40-35-PM.jpg" alt="Soham Wani" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />

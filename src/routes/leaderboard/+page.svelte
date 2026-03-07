@@ -45,7 +45,7 @@
     };
 </script>
 
-<title>Cipher Saga 2.0 - Leaderboard</title>
+<title>Cipher Saga 3.0 - Leaderboard</title>
 <CipherTitle text="Leaderboard" />
 {#if data.error}
     <div role="alert" class="alert alert-error">

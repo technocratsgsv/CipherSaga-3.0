@@ -137,7 +137,7 @@
     $: currQuestionData, updateComment();
 </script>
 
-<title>Cipher Saga 2.0 - Play</title>
+<title>Cipher Saga 3.0 - Play</title>
 
 {#if questions?.length > 0}
 
