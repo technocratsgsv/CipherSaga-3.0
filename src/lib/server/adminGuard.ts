@@ -6,7 +6,7 @@ export const ADMIN_EMAILS = [
     'pratikranjan3011@gmail.com',
 ];
 
-/** Call this in any /admin/* layout/page server-side load or action. */
+/** Call this in any /admin/* ldayout/page server-side load or action. */
 export function requireAdmin(locals: App.Locals): void {
     if (!locals.isAdmin) {
         throw redirect(302, '/admin/login');
