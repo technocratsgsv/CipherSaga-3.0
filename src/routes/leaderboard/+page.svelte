@@ -71,12 +71,12 @@
                 bgColorclass={getBgColorFromPosition(teamPosition)}
             >
                 <GlowingStarsTitle
-                    className={getTextColorFromPosition(teamPosition) || ""}
+                    className={`${getTextColorFromPosition(teamPosition) || ""} text-xl md:text-2xl`}
                     >{team.teamName}</GlowingStarsTitle
                 >
                 <!--                <div class="flex items-center justify-between">-->
                 <GlowingStarsDescription
-                    className={`font-bold ${getTextColorFromPosition(teamPosition)}`}
+                    className={`font-bold ${getTextColorFromPosition(teamPosition)} text-sm md:text-base`}
                 >
                     {team.members} member{#if team.members !== 1}s{/if} • {team.score}
                     points
@@ -99,7 +99,7 @@
             </thead>
             <tbody>
                 {#each rest as team, teamIndex}
-                    <tr class="text-sm md:text-xl">
+                    <tr class="text-xs md:text-xl">
                         <th class="font-mono">#{teamIndex + 4} </th>
                         <td
                             class="font-bold break-words max-w-[150px] whitespace-normal"

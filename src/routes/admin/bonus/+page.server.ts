@@ -10,21 +10,39 @@ export const load: PageServerLoad = async ({ locals }) => {
     // Fetch all bonus questions
     const bqSnap = await adminDB.collection('bonusQuestions').get();
 
-    // Fetch all teams to resolve solver name
-    const teamsSnap = await adminDB.collection('teams').get();
-    const teamMap: Record<string, string> = {};
-    teamsSnap.docs.forEach(doc => {
-        teamMap[doc.id] = doc.data().teamName || doc.id;
+    // Fetch all teams to resolve solver name and members
+    const usersSnap = await adminDB.collection('users').get();
+    const userMap: Record<string, string> = {};
+    usersSnap.docs.forEach(doc => {
+        const d = doc.data();
+        userMap[doc.id] = (d.first && d.last) ? `${d.first} ${d.last}` : (d.username || doc.id);
     });
 
-    // Count how many teams have scanned each qrString
-    const allTeams = teamsSnap.docs.map(doc => doc.data());
+    const teamsSnap = await adminDB.collection('teams').get();
+    const teamMap: Record<string, string> = {};
+    const teamMembersMap: Record<string, string[]> = {};
+    teamsSnap.docs.forEach(doc => {
+        const data = doc.data();
+        teamMap[doc.id] = data.teamName || doc.id;
+        teamMembersMap[doc.id] = (data.members || []).map((mId: string) => userMap[mId] || mId);
+    });
 
     const questions = bqSnap.docs.map(doc => {
         const data = doc.data();
         const scannedByTeams = teamsSnap.docs
             .filter(doc => (doc.data().scannedQRCodes || []).includes(data.qrString))
-            .map(doc => doc.data().teamName || doc.id);
+            .map(doc => {
+                const tName = doc.data().teamName || doc.id;
+                const members = teamMembersMap[doc.id] || [];
+                return members.length > 0 ? `${tName} (${members.join(', ')})` : tName;
+            });
+
+        let solvedByTeamName = null;
+        if (data.solvedByTeamId) {
+            const tName = teamMap[data.solvedByTeamId] || data.solvedByTeamId;
+            const members = teamMembersMap[data.solvedByTeamId] || [];
+            solvedByTeamName = members.length > 0 ? `${tName} (${members.join(', ')})` : tName;
+        }
 
         return {
             id: doc.id,
@@ -38,7 +56,7 @@ export const load: PageServerLoad = async ({ locals }) => {
             isSolved: data.isSolved || false,
             isVisible: data.isVisible !== undefined ? data.isVisible : true,
             solvedByTeamId: data.solvedByTeamId || null,
-            solvedByTeamName: data.solvedByTeamId ? (teamMap[data.solvedByTeamId] || data.solvedByTeamId) : null,
+            solvedByTeamName,
             solvedAt: data.solvedAt ? data.solvedAt.toDate().toISOString() : null,
             scannedByTeams,
             scannedByCount: scannedByTeams.length,

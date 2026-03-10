@@ -28,7 +28,7 @@
 
     <!-- Header -->
     <div
-        class="flex items-center justify-between mb-6 relative z-10 max-w-6xl mx-auto"
+        class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 relative z-10 max-w-6xl mx-auto gap-4"
     >
         <div>
             <a
@@ -39,14 +39,14 @@
             <h1
                 class="text-3xl font-bold mt-1 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-transparent pb-1"
             >
-                 Bonus Question Management
+                Bonus Question Management
             </h1>
             <p class="text-neutral-500 text-sm mt-1">
                 {data.questions.length} bonus questions
             </p>
         </div>
         <button
-            class="btn btn-sm bg-primary text-black hover:bg-primary/80 border-none transition-colors"
+            class="btn btn-sm bg-primary text-black hover:bg-primary/80 border-none transition-colors w-full sm:w-auto"
             on:click={() => (showCreateForm = !showCreateForm)}
         >
             {showCreateForm ? " Cancel" : "+ Add Bonus Question"}
@@ -203,7 +203,7 @@
                             <h3
                                 class="text-lg font-semibold text-neutral-200 mb-2"
                             >
-                                 Editing: {q.title}
+                                Editing: {q.title}
                             </h3>
                             <form
                                 method="POST"
@@ -362,18 +362,21 @@
                                         {#if q.isVisible}
                                             <span
                                                 class="badge badge-sm bg-emerald-900/30 text-emerald-400 border-emerald-800"
-                                                > Visible</span
+                                            >
+                                                Visible</span
                                             >
                                         {:else}
                                             <span
                                                 class="badge badge-sm bg-zinc-800 text-neutral-500 border-zinc-700"
-                                                > Hidden</span
+                                            >
+                                                Hidden</span
                                             >
                                         {/if}
                                         {#if q.isSolved}
                                             <span
                                                 class="badge badge-sm bg-amber-900/30 text-amber-400 border-amber-800"
-                                                > Solved</span
+                                            >
+                                                Solved</span
                                             >
                                         {/if}
                                     </div>
@@ -385,20 +388,20 @@
                                     <div
                                         class="flex gap-6 mt-2 flex-wrap text-xs text-neutral-500"
                                     >
-                                        <span
-                                            > Answer: <code
-                                                class="text-emerald-400 font-mono"
+                                        <span>
+                                            Answer: <code
+                                                class="text-emerald-400 font-mono break-all"
                                                 >{q.answer}</code
                                             ></span
                                         >
-                                        <span
-                                            > QR: <code
-                                                class="text-cyan-400 font-mono"
+                                        <span>
+                                            QR: <code
+                                                class="text-cyan-400 font-mono break-all"
                                                 >{q.qrString}</code
                                             ></span
                                         >
-                                        <span
-                                            > Scanned by:
+                                        <span>
+                                            Scanned by:
                                             {#if q.scannedByCount === 0}
                                                 <span class="text-neutral-600"
                                                     >—</span
@@ -429,16 +432,16 @@
                                             {/if}
                                         </span>
                                         {#if q.isSolved && q.solvedByTeamName}
-                                            <span
-                                                > Solved by: <span
+                                            <span>
+                                                Solved by: <span
                                                     class="text-amber-400 font-medium"
                                                     >{q.solvedByTeamName}</span
                                                 ></span
                                             >
                                         {/if}
                                         {#if q.solvedAt}
-                                            <span
-                                                > At: <span
+                                            <span>
+                                                At: <span
                                                     class="text-neutral-300"
                                                     >{new Date(
                                                         q.solvedAt,
@@ -451,7 +454,7 @@
                                         <p
                                             class="text-xs text-neutral-500 mt-1"
                                         >
-                                             Hint: {q.hint}
+                                            Hint: {q.hint}
                                         </p>
                                     {/if}
                                 </div>
@@ -460,7 +463,8 @@
                                     <button
                                         class="btn btn-xs bg-zinc-800 hover:bg-zinc-700 text-neutral-300 border-zinc-700 transition-colors"
                                         on:click={() => startEdit(q)}
-                                        > Edit</button
+                                    >
+                                        Edit</button
                                     >
                                     <form
                                         method="POST"
@@ -481,9 +485,7 @@
                                             type="submit"
                                             class="btn btn-xs bg-zinc-800 hover:bg-zinc-700 text-neutral-300 border-zinc-700 transition-colors"
                                         >
-                                            {q.isVisible
-                                                ? " Hide"
-                                                : " Show"}
+                                            {q.isVisible ? " Hide" : " Show"}
                                         </button>
                                     </form>
                                     {#if q.isSolved}
@@ -500,7 +502,8 @@
                                             <button
                                                 type="submit"
                                                 class="btn btn-xs bg-orange-950/40 hover:bg-orange-900/60 text-orange-400 border-orange-900/50 transition-colors"
-                                                > Reset</button
+                                            >
+                                                Reset</button
                                             >
                                         </form>
                                     {/if}
@@ -527,7 +530,9 @@
                                                         .closest("form")
                                                         ?.submit();
                                                 }
-                                            }}> Delete</button
+                                            }}
+                                        >
+                                            Delete</button
                                         >
                                     </form>
                                 </div>

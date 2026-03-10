@@ -253,7 +253,7 @@
                                     </p>
 
                                     <div
-                                        class="flex items-center gap-4 text-xs font-bold tracking-wider uppercase"
+                                        class="flex flex-wrap items-center gap-2 sm:gap-4 text-xs font-bold tracking-wider uppercase"
                                     >
                                         {#if q.isSolvedByMe}
                                             <span class="text-green-400"
@@ -295,7 +295,7 @@
                                 class="border-t border-zinc-700/50 bg-black/20"
                             >
                                 <button
-                                    class="w-full px-8 py-3 flex items-center justify-between text-sm font-bold text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
+                                    class="w-full px-4 sm:px-8 py-3 flex items-center justify-between text-xs sm:text-sm font-bold text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
                                     on:click={() => toggleQuestion(q.id)}
                                 >
                                     <span

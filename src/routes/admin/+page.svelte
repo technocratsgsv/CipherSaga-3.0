@@ -17,22 +17,19 @@
 
     <!-- Header -->
     <div
-        class="flex items-center justify-between mb-8 relative z-10 max-w-5xl mx-auto"
+        class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 relative z-10 max-w-5xl mx-auto gap-4 md:gap-0"
     >
         <div>
             <h1
                 class="text-4xl font-bold bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-transparent pb-1"
             >
-                 Admin Dashboard
+                Admin Dashboard
             </h1>
             <p class="text-neutral-400 mt-1">CipherSaga Control Panel</p>
         </div>
-        <div class="flex gap-2 flex-wrap justify-end">
-            <a
-                href="/ready"
-                class="btn btn-ghost btn-sm text-cyan-400 hover:text-white hover:bg-zinc-800 border border-zinc-700 hover:border-zinc-600 transition-all"
-                > Go to Website</a
-            >
+        <div
+            class="flex gap-2 flex-wrap justify-start md:justify-end w-full md:w-auto"
+        >
             <a
                 href="/"
                 class="btn btn-ghost btn-sm text-neutral-300 hover:text-white hover:bg-zinc-800"
@@ -112,7 +109,7 @@
                 <h2
                     class="card-title text-2xl text-neutral-200 group-hover:text-primary transition-colors"
                 >
-                     Question Management
+                    Question Management
                 </h2>
                 <p class="text-neutral-400">
                     Add, edit, or delete main game questions. View answers and
@@ -135,7 +132,7 @@
                 <h2
                     class="card-title text-2xl text-neutral-200 group-hover:text-cyan-400 transition-colors"
                 >
-                     Team Management
+                    Team Management
                 </h2>
                 <p class="text-neutral-400">
                     View all teams, ban/unban teams, or delete teams entirely.
@@ -157,7 +154,7 @@
                 <h2
                     class="card-title text-2xl text-neutral-200 group-hover:text-amber-400 transition-colors"
                 >
-                     Bonus Question Management
+                    Bonus Question Management
                 </h2>
                 <p class="text-neutral-400">
                     Add, edit, hide/show bonus questions. See who scanned and
@@ -180,7 +177,7 @@
                 <h2
                     class="card-title text-2xl text-neutral-200 group-hover:text-violet-400 transition-colors"
                 >
-                     Site Settings
+                    Site Settings
                 </h2>
                 <p class="text-neutral-400">
                     Control game start/end times and enable maintenance mode for

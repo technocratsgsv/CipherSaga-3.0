@@ -9,7 +9,7 @@
 <title>Cipher Saga 3.0 - Home</title>
 {#if !showRules}
     <div
-        class="relative flex h-screen w-full flex-col items-center justify-center rounded-md px-32 antialiased"
+        class="relative flex min-h-screen w-full flex-col items-center justify-center rounded-md px-8 md:px-16 lg:px-32 antialiased overflow-hidden"
     >
         <BackgroundBeams />
         <div class="px-8 md:px-16 lg:px-32">
@@ -27,20 +27,23 @@
                 </p>
             </Countdown>
             <p></p>
-                       
+
             <CipherTitle text="Cipher Saga 3.0" />
             <p></p>
             <p
                 class="relative z-10 mx-auto my-2 max-w-lg text-center text-base text-neutral-500"
             >
-                Get Ready to experience the ultimate challenge of this year!!<br />Think . Connect . Solve
+                Get Ready to experience the ultimate challenge of this year!!<br
+                />Think . Connect . Solve
             </p>
         </div>
         <div
             style="align-items: center;justify-content: center;display: flex;"
             class="mt-6"
         >
-            <div>
+            <div
+                class="flex flex-row justify-center items-center gap-4 flex-wrap"
+            >
                 <Button
                     borderRadius="0.75rem"
                     className="bg-white-300 text-white border-slate-800 text-sm font-bold"
@@ -59,7 +62,11 @@
                 <Button
                     borderRadius="0.75rem"
                     className="bg-white-300 text-white border-slate-800 text-sm font-bold"
-                    onClick={() => window.open("https://drive.google.com/file/d/1uzWoq9chyor-pr8JGktyJfjJWB1I1qLE/view?usp=sharing", "_blank")}
+                    onClick={() =>
+                        window.open(
+                            "https://drive.google.com/file/d/1uzWoq9chyor-pr8JGktyJfjJWB1I1qLE/view?usp=sharing",
+                            "_blank",
+                        )}
                 >
                     Rulebook
                 </Button>
@@ -69,7 +76,7 @@
 {/if}
 {#if showRules}
     <div
-        class="relative flex h-screen w-full flex-col items-center justify-start rounded-md px-32 antialiased"
+        class="relative flex min-h-screen w-full flex-col items-center justify-start rounded-md px-4 md:px-16 lg:px-32 antialiased overflow-hidden"
     >
         <BackgroundBeams />
         <div
@@ -90,9 +97,9 @@
             style="align-items: center;justify-content: center;display: flex;"
             class="mt-6 pb-[3vh]"
         >
-            <div>
+            <div class="w-full flex justify-center">
                 <div
-                    class="bg-white-300 text-white border-slate-800 border-2 text-sm w-[80vw] min-w-[80vw] max-w-[80vw] p-[5vh_10vw] rounded-[0.75rem]"
+                    class="bg-white-300 text-white border-slate-800 border-2 text-sm w-[90vw] md:w-[80vw] lg:w-[70vw] p-[3vh_5vw] md:p-[5vh_10vw] rounded-[0.75rem]"
                 >
                     <div class="pb-[3vh]">
                         <h2
@@ -103,15 +110,16 @@
                         <p
                             class="relative z-10 text-justify text-sm text-neutral-400"
                         >
-                            Cipher Saga 3.0 is the third installment of the online cryptic hunt event hosted
-                            during EPITOME, the annual techno-management fest of Gati Shakti Vishwavidyalaya.
-                            Participants will team up to tackle a series of
-                            challenging levels, deciphering clues and solving
-                            riddles to progress.
-                            This edition has QR hunt implemented as a new feature.
-                            The event will test their wit,collaboration, and 
-                            problem-solving skills, which will probably leave 
-                            everyone thrilled and eager for more.
+                            Cipher Saga 3.0 is the third installment of the
+                            online cryptic hunt event hosted during EPITOME, the
+                            annual techno-management fest of Gati Shakti
+                            Vishwavidyalaya. Participants will team up to tackle
+                            a series of challenging levels, deciphering clues
+                            and solving riddles to progress. This edition has QR
+                            hunt implemented as a new feature. The event will
+                            test their wit, collaboration, and problem-solving
+                            skills, which will probably leave everyone thrilled
+                            and eager for more.
                         </p>
                     </div>
                     <div class="pb-[3vh]">
@@ -124,13 +132,15 @@
                         <p
                             class="relative z-10 text-justify text-sm text-neutral-400"
                         >
-                            QR Hunt is a new and exciting feature where players receive 
-                            bonus questions that contain hints guiding them to strategically 
-                            placed QR codes. By scanning these codes, participants unlock 
-                            deeper questions and additional clues that lead them closer to 
-                            the final solution. Teams must solve each step of the hunt before 
-                            their competitors to reach the final answer and earn valuable 
-                            bonus marks.
+                            QR Hunt is a new and exciting feature where players
+                            receive bonus questions that contain hints guiding
+                            them to strategically placed QR codes. By scanning
+                            these codes, participants unlock deeper questions
+                            and additional clues that lead them closer to the
+                            final solution. Teams must solve each step of the
+                            hunt before their competitors to reach the final
+                            answer and earn valuable bonus marks. >>>>>>>
+                            origin/main
                         </p>
                     </div>
                     <div class="pb-[3vh]">
@@ -166,10 +176,10 @@
                             class="relative z-10 text-justify text-sm text-neutral-400"
                         >
                             Winners will be decided based on the leaderboard
-                            standings at the end of the competition. The leaderboard ranks teams based on
-                            how quickly they solve the puzzles, with teams that
-                            solve earlier being placed higher. Accuracy is not a
-                            criteria.
+                            standings at the end of the competition. The
+                            leaderboard ranks teams based on how quickly they
+                            solve the puzzles, with teams that solve earlier
+                            being placed higher. Accuracy is not a criteria.
                         </p>
                     </div>
                     <div class="pb-[3vh]">
@@ -366,7 +376,14 @@
                                 or images.
                             </li>
                             <li>
-                                <strong>Geocodes:</strong> Sometimes, when there are random numbers on the screen, try using geocoding sites that can make you arrive at the next clue. Try puting those coordinates in Google maps or geocoding sites like geocode.xyz. Another site called geoapify.com can prove useful as well. Try lingering with the words and get to sites like what3words or any other popular and unique geocoding software.
+                                <strong>Geocodes:</strong> Sometimes, when there
+                                are random numbers on the screen, try using geocoding
+                                sites that can make you arrive at the next clue.
+                                Try puting those coordinates in Google maps or geocoding
+                                sites like geocode.xyz. Another site called geoapify.com
+                                can prove useful as well. Try lingering with the
+                                words and get to sites like what3words or any other
+                                popular and unique geocoding software.
                             </li>
                         </ul>
                         <p
@@ -383,10 +400,37 @@
                         </h2>
                     </div>
                     <div class="pb-[4vh]">
-                        <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-4">
+                        <div
+                            class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-4"
+                        >
                             <div class="flex flex-col items-center">
-                                <a href="https://www.linkedin.com/in/shreya-mohanty-755529296/">
-                                    <img src="https://i.ibb.co/d4v8xBmj/IMG-20250314-WA0093.jpg" alt="Shreya Mohanty" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+                                <a href="">
+                                    <img
+                                        src="https://i.ibb.co/whYZ0Ws3/Whats-App-Image-2025-03-13-at-9-40-35-PM.jpg"
+                                        alt="Soham Wani"
+                                        class="w-20 h-20 rounded-full mb-2 mx-auto object-cover"
+                                    />
+                                    <h2
+                                        class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
+                                    >
+                                        Soham Wani
+                                    </h2>
+                                    <p
+                                        class="relative z-10 text-center text-sm text-neutral-400 pb-[1vh]"
+                                    >
+                                        (Event Head)
+                                    </p></a
+                                >
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <a
+                                    href="https://www.linkedin.com/in/shreya-mohanty-755529296/"
+                                >
+                                    <img
+                                        src="https://i.ibb.co/d4v8xBmj/IMG-20250314-WA0093.jpg"
+                                        alt="Shreya Mohanty"
+                                        class="w-20 h-20 rounded-full mb-2 mx-auto object-cover"
+                                    />
                                     <h2
                                         class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
                                     >
@@ -400,8 +444,14 @@
                                 >
                             </div>
                             <div class="flex flex-col items-center">
-                                <a href="https://www.linkedin.com/in/rishav-kumar-2399241ab/">
-                                    <img src="https://i.ibb.co/tpyz2pZL/58198da2-d4f5-4e08-bbe8-085c751453ff.jpg" alt="Rishav Kumar" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+                                <a
+                                    href="https://www.linkedin.com/in/rishav-kumar-2399241ab/"
+                                >
+                                    <img
+                                        src="https://i.ibb.co/tpyz2pZL/58198da2-d4f5-4e08-bbe8-085c751453ff.jpg"
+                                        alt="Rishav Kumar"
+                                        class="w-20 h-20 rounded-full mb-2 mx-auto object-cover"
+                                    />
                                     <h2
                                         class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
                                     >
@@ -424,10 +474,16 @@
                         </h2>
                     </div>
                     <div class="pb-[4vh]">
-                        <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-4">
+                        <div
+                            class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-4"
+                        >
                             <div class="flex flex-col items-center">
                                 <a href="">
-                                    <img src="https://i.ibb.co/v4zDfZJd/Whats-App-Image-2026-03-06-at-6-30-15-PM.jpg" alt="Pratik Ranjan" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+                                    <img
+                                        src="https://i.ibb.co/v4zDfZJd/Whats-App-Image-2026-03-06-at-6-30-15-PM.jpg"
+                                        alt="Pratik Ranjan"
+                                        class="w-20 h-20 rounded-full mb-2 mx-auto object-cover"
+                                    />
                                     <h2
                                         class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
                                     >
@@ -442,7 +498,11 @@
                             </div>
                             <div class="flex flex-col items-center">
                                 <a href="">
-                                    <img src="https://i.ibb.co/LzL7XyXf/Whats-App-Image-2026-03-06-at-6-30-22-PM.jpg" alt="Anmol Gupta" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+                                    <img
+                                        src="https://i.ibb.co/LzL7XyXf/Whats-App-Image-2026-03-06-at-6-30-22-PM.jpg"
+                                        alt="Anmol Gupta"
+                                        class="w-20 h-20 rounded-full mb-2 mx-auto object-cover"
+                                    />
                                     <h2
                                         class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
                                     >
@@ -457,7 +517,11 @@
                             </div>
                             <div class="flex flex-col items-center">
                                 <a href="">
-                                    <img src="https://i.ibb.co/wF61NBtT/Whats-App-Image-2026-03-06-at-8-23-35-PM.jpg" alt="Trisha Patel" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+                                    <img
+                                        src="https://i.ibb.co/wF61NBtT/Whats-App-Image-2026-03-06-at-8-23-35-PM.jpg"
+                                        alt="Trisha Patel"
+                                        class="w-20 h-20 rounded-full mb-2 mx-auto object-cover"
+                                    />
                                     <h2
                                         class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
                                     >
@@ -471,8 +535,14 @@
                                 >
                             </div>
                             <div class="flex flex-col items-center">
-                                <a href="https://www.linkedin.com/in/prashant-panchal-7aa5402a0/">
-                                    <img src="https://i.ibb.co/yKTmJsy/Whats-App-Image-2026-03-06-at-7-28-59-PM.jpg" alt="Prashant Panchal" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+                                <a
+                                    href="https://www.linkedin.com/in/prashant-panchal-7aa5402a0/"
+                                >
+                                    <img
+                                        src="https://i.ibb.co/yKTmJsy/Whats-App-Image-2026-03-06-at-7-28-59-PM.jpg"
+                                        alt="Prashant Panchal"
+                                        class="w-20 h-20 rounded-full mb-2 mx-auto object-cover"
+                                    />
                                     <h2
                                         class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
                                     >
@@ -487,7 +557,11 @@
                             </div>
                             <div class="flex flex-col items-center">
                                 <a href="">
-                                    <img src="https://i.ibb.co/VpN1bb47/Whats-App-Image-2026-03-06-at-7-00-20-PM.jpg" alt="Neeraj" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+                                    <img
+                                        src="https://i.ibb.co/VpN1bb47/Whats-App-Image-2026-03-06-at-7-00-20-PM.jpg"
+                                        alt="Neeraj"
+                                        class="w-20 h-20 rounded-full mb-2 mx-auto object-cover"
+                                    />
                                     <h2
                                         class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
                                     >
@@ -502,7 +576,11 @@
                             </div>
                             <div class="flex flex-col items-center">
                                 <a href="">
-                                    <img src="https://i.ibb.co/r23hkQNv/Whats-App-Image-2026-03-06-at-21-24-22.jpg" alt="Devesh Kumar" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+                                    <img
+                                        src="https://i.ibb.co/r23hkQNv/Whats-App-Image-2026-03-06-at-21-24-22.jpg"
+                                        alt="Devesh Kumar"
+                                        class="w-20 h-20 rounded-full mb-2 mx-auto object-cover"
+                                    />
                                     <h2
                                         class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
                                     >
@@ -525,10 +603,18 @@
                         </h2>
                     </div>
                     <div class="pb-[4vh]">
-                        <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-4">
+                        <div
+                            class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-4"
+                        >
                             <div class="flex flex-col items-center">
-                                <a href="https://www.linkedin.com/in/dr-anshika-srivastava-933bbb1b7/">
-                                    <img src="https://i.ibb.co/NT1B7nJ/1703908262735.jpg" alt="Dr. Anshika Srivastava" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+                                <a
+                                    href="https://www.linkedin.com/in/dr-anshika-srivastava-933bbb1b7/"
+                                >
+                                    <img
+                                        src="https://i.ibb.co/NT1B7nJ/1703908262735.jpg"
+                                        alt="Dr. Anshika Srivastava"
+                                        class="w-20 h-20 rounded-full mb-2 mx-auto object-cover"
+                                    />
                                     <h2
                                         class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
                                     >
@@ -541,10 +627,16 @@
                                     </p></a
                                 >
                             </div>
-                        
+
                             <div class="flex flex-col items-center">
-                                <a href="">
-                                    <img src="https://i.ibb.co/whYZ0Ws3/Whats-App-Image-2025-03-13-at-9-40-35-PM.jpg" alt="Soham Wani" class="w-20 h-20 rounded-full mb-2 mx-auto object-cover" />
+                                <a
+                                    href="https://www.linkedin.com/in/dr-sonu-lamba-2a385694/"
+                                >
+                                    <img
+                                        src="https://i.ibb.co/6cfXncPm/1736622240889.jpg"
+                                        alt="Dr. Sonu Lamba"
+                                        class="w-20 h-20 rounded-full mb-2 mx-auto object-cover"
+                                    />
                                     <h2
                                         class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
                                     >
@@ -559,7 +651,11 @@
                             </div>
                             <div class="flex flex-col items-center">
                                 <a href="">
-                                    <img src="https://i.ibb.co/qM2wVX1z/Logo.png" alt="TechnoCrats" class="w-20 h-20 rounded-full mb-2 mx-auto" />
+                                    <img
+                                        src="https://i.ibb.co/qM2wVX1z/Logo.png"
+                                        alt="TechnoCrats"
+                                        class="w-20 h-20 rounded-full mb-2 mx-auto"
+                                    />
                                     <h2
                                         class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-xl font-bold text-transparent"
                                     >
@@ -578,7 +674,9 @@
                         <h2
                             class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-l font-bold text-transparent pb-[1vh]"
                         >
-                            Also a special thanks to Student Cell @ GSV and Epitome'26 organising committee for supoorting us throughout
+                            Also a special thanks to Student Cell @ GSV and
+                            Epitome'26 organising committee for supporting us
+                            throughout
                         </h2>
                     </div>
                 </div>
