@@ -8,12 +8,20 @@ export const load: PageServerLoad = async ({ locals }) => {
     requireAdmin(locals);
 
     const snap = await adminDB.collection('teams').orderBy('level', 'desc').get();
+    const usersSnap = await adminDB.collection('users').get();
+    const userMap = new Map();
+    usersSnap.docs.forEach(doc => {
+        const d = doc.data();
+        let name = (d.first && d.last) ? `${d.first} ${d.last}` : (d.username || doc.id);
+        userMap.set(doc.id, name);
+    });
+
     const teams = snap.docs.map(doc => {
         const d = doc.data();
         return {
             id: doc.id,
             teamName: d.teamName ?? doc.id,
-            members: d.members ?? [],
+            members: (d.members ?? []).map((mId: string) => userMap.get(mId) ?? mId),
             level: d.level ?? 0,
             gsv_verified: d.gsv_verified ?? false,
             banned: d.banned ?? false,

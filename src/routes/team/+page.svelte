@@ -34,7 +34,7 @@
 <Doc ref={`teams/${data.userTeam}`} let:data>
     <center>
         <p
-            class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-6xl font-bold text-transparent pb-[1vh]"
+            class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-4xl md:text-6xl font-bold text-transparent pb-[1vh]"
         >
             {data.teamName}
         </p>

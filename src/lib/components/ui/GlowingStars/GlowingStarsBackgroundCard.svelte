@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { cn } from '@/utils';
-    import Illustration from './Illustration.svelte';
+    import { cn } from "@/utils";
+    import Illustration from "./Illustration.svelte";
 
     export let className: string | undefined = undefined;
     export let bgColorclass: string;
@@ -9,15 +9,15 @@
 </script>
 
 <div
-        on:mouseenter={() => (mouseEnter = true)}
-        on:mouseleave={() => (mouseEnter = false)}
-        class={cn(
-		'h-full max-h-[25rem] m-4 w-full max-w-[25vw] rounded-xl border border-[#eaeaea] bg-[linear-gradient(110deg,#333_0.6%,#222)] p-4 dark:border-neutral-600',
-		className
-	)}
+    on:mouseenter={() => (mouseEnter = true)}
+    on:mouseleave={() => (mouseEnter = false)}
+    class={cn(
+        "h-full max-h-[25rem] m-4 w-[100%] max-w-[80vw] md:max-w-[40vw] lg:max-w-[25vw] rounded-xl border border-[#eaeaea] bg-[linear-gradient(110deg,#333_0.6%,#222)] p-4 dark:border-neutral-600",
+        className,
+    )}
 >
     <div class="flex items-center justify-center">
-        <Illustration {mouseEnter} glowColorClass={bgColorclass}/>
+        <Illustration {mouseEnter} glowColorClass={bgColorclass} />
     </div>
     <div class="px-2 pb-6"><slot /></div>
 </div>
