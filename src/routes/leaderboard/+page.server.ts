@@ -3,15 +3,15 @@ import type { PageServerLoad } from './$types';
 
 let leaderboardCache: any[] = [];
 let lastFetch = 0;
+const CACHE_TTL = 10 * 60 * 1000; // 10 minutes (600000ms)
 
 export const load: PageServerLoad = async () => {
 
     try {
-
         const now = Date.now();
 
         // refresh leaderboard only every 10 minutes
-        if (!leaderboardCache.length || now - lastFetch > 600000) {
+        if (!leaderboardCache.length || now - lastFetch > CACHE_TTL) {
 
             const snapshot = await adminDB
                 .collection("teams")
@@ -40,7 +40,6 @@ export const load: PageServerLoad = async () => {
                     members: members.length,
                     gsv: data.gsv_verified || false
                 };
-
             });
 
             leaderboardCache.sort((a, b) => b.score - a.score);
