@@ -17,6 +17,13 @@ const appCache = new NodeCache({ stdTTL: 300 });
 export const handle = sequence(Sentry.sentryHandle(), (async ({ event, resolve }) => {
     const pathname = event.url.pathname;
 
+    // Helper to add COOP header needed for Firebase Google Sign-in popup
+    const resolveWithCOOP = async () => {
+        const response = await resolve(event);
+        response.headers.set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+        return response;
+    };
+
     // Skip all Firebase logic for static assets (favicon, images, CSS, JS bundles, etc.)
     // Running DB code on these requests causes 500 errors when Firebase is unavailable.
     const isStaticAsset = pathname.startsWith('/_app/')
@@ -30,7 +37,7 @@ export const handle = sequence(Sentry.sentryHandle(), (async ({ event, resolve }
         || pathname.endsWith('.js');
 
     if (isStaticAsset) {
-        return resolve(event);
+        return resolveWithCOOP();
     }
 
     const sessionCookie = event.cookies.get("__session");
@@ -54,7 +61,7 @@ export const handle = sequence(Sentry.sentryHandle(), (async ({ event, resolve }
             event.locals.userID = null;
             event.locals.userExists = false;
             event.locals.userTeam = null;
-            return resolve(event);
+            return resolveWithCOOP();
         }
 
         const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie!);
@@ -95,7 +102,7 @@ export const handle = sequence(Sentry.sentryHandle(), (async ({ event, resolve }
             event.locals.banned = false;
         }
 
-        return resolve(event);
+        return resolveWithCOOP();
     } catch (e: any) {
         // If the cookie verification fails (e.g. auth/session-cookie-expired or revoked)
         // We should clear the cookie so the user isn't stuck in a crash loop and is forced to re-login.
@@ -111,7 +118,7 @@ export const handle = sequence(Sentry.sentryHandle(), (async ({ event, resolve }
         event.locals.banned = false;
         event.locals.isAdmin = false;
         event.locals.isAdminEmail = false;
-        return resolve(event);
+        return resolveWithCOOP();
     }
 }) satisfies Handle);
 export const handleError = Sentry.handleErrorWithSentry();
