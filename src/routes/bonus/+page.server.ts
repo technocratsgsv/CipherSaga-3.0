@@ -1,28 +1,35 @@
 import { error } from '@sveltejs/kit';
 import { adminDB } from '$lib/server/admin';
 import type { PageServerLoad } from './$types';
+import NodeCache from 'node-cache';
+
+const bonusCache = new NodeCache({ stdTTL: 30 }); // 30s cache
 
 export const load: PageServerLoad = async ({ locals }) => {
     // Admins see ALL bonus questions with full data
     if (locals.isAdminEmail) {
-        const qSnapshot = await adminDB.collection('bonusQuestions').get();
-        const questions = qSnapshot.docs.map(doc => {
-            const data = doc.data();
-            return {
-                id: doc.id,
-                title: data.title,
-                description: data.description,
-                points: data.points,
-                isSolved: data.isSolved || false,
-                solvedByTeamId: data.solvedByTeamId || null,
-                isUnlocked: true,
-                isSolvedByMe: false,
-                hint: data.hint,
-                isVisible: data.isVisible,
-                negative_points: data.negative_points,
-                answer: data.answer, // admins see answers
-            };
-        });
+        let questions = bonusCache.get<any[]>("adminBonusQuestions");
+        if (!questions) {
+            const qSnapshot = await adminDB.collection('bonusQuestions').get();
+            questions = qSnapshot.docs.map(doc => {
+                const data = doc.data();
+                return {
+                    id: doc.id,
+                    title: data.title,
+                    description: data.description,
+                    points: data.points,
+                    isSolved: data.isSolved || false,
+                    solvedByTeamId: data.solvedByTeamId || null,
+                    isUnlocked: true,
+                    isSolvedByMe: false,
+                    hint: data.hint,
+                    isVisible: data.isVisible,
+                    negative_points: data.negative_points,
+                    answer: data.answer, // admins see answers
+                };
+            });
+            bonusCache.set("adminBonusQuestions", questions, 60); // 1 minute Admin Cache
+        }
         return { questions, userTeam: locals.userTeam };
     }
 
@@ -40,35 +47,32 @@ export const load: PageServerLoad = async ({ locals }) => {
     }
 
     try {
-        // 2. Fetch Team Data (to get scannedQRCodes)
-        const teamDoc = await adminDB.collection('teams').doc(locals.userTeam).get();
-        if (!teamDoc.exists) {
-            throw error(404, "Team not found");
+        // 2. Fetch Team Data with caching
+        const teamCacheKey = `teamScans_${locals.userTeam}`;
+        let teamData: any = bonusCache.get(teamCacheKey);
+
+        if (!teamData) {
+            const teamDoc = await adminDB.collection('teams').doc(locals.userTeam).get();
+            if (!teamDoc.exists) {
+                throw error(404, "Team not found");
+            }
+            teamData = teamDoc.data() || {};
+            bonusCache.set(teamCacheKey, teamData);
         }
-        const teamData = teamDoc.data() || {};
+
         const scannedCodes = teamData.scannedQRCodes || [];
 
-        // 3. Fetch Bonus Questions
-        // Only visible active questions + solved questions (history)
-        // Requirement: "Instantly the question will be invisible to all other teams" -> solved questions are hidden?
-        // "Once solved, the bonus question cannot be attempted by any other team."
-        // Usually in CTFs, you show "Solved by X" as a status, rather than making it disappear completely.
-        // If it disappears, people might wonder where it went.
-        // Let's fetch ALL items for now and let the UI decide potential display, 
-        // OR filtering on usage of 'isVisible'.
-        // The Plan said: "isVisible: boolean; // Default true. Admin control to release/hide."
-        // And update logic: "isVisible: false // Immediately hide from others"
-        // So if isVisible is false, we generally don't show it.
-        // BUT if *I* solved it, maybe I want to see my victory?
-        // Query: where 'isVisible' == true?
-        // Let's query ALL and filter in memory since dataset is small, to ensure logic is correct.
+        // 3. Fetch Bonus Questions with caching
+        let allBonusQuestions = bonusCache.get<any[]>("allBonusQuestions");
+        if (!allBonusQuestions) {
+            const qRef = adminDB.collection('bonusQuestions');
+            const qSnapshot = await qRef.get();
+            allBonusQuestions = qSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            bonusCache.set("allBonusQuestions", allBonusQuestions);
+        }
 
-        const qRef = adminDB.collection('bonusQuestions');
-        const qSnapshot = await qRef.get(); // Get ALL for admin logic flexibility
-
-        const questions = qSnapshot.docs.map(doc => {
-            const data = doc.data();
-            const id = doc.id;
+        const questions = allBonusQuestions.map(data => {
+            const id = data.id;
 
             // Check if user's team solved it
             const solvedByMe = data.solvedByTeamId === locals.userTeam;
