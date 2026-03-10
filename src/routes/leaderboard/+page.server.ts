@@ -8,6 +8,7 @@ export const load: PageServerLoad = async () => {
         const snapshot = await adminDB
             .collection("teams")
             .orderBy("level", "desc")
+            .orderBy("last_change")
             .get();
 
         const leaderboard = snapshot.docs.map((doc) => {
