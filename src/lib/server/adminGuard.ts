@@ -3,6 +3,7 @@ import { redirect } from '@sveltejs/kit';
 export const ADMIN_EMAILS = [
     'neerajkohli472@gmail.com',
     'shreyamohanty.p6@gmail.com',
+    'pratikranjan3011@gmail.com',
 ];
 
 /** Call this in any /admin/* layout/page server-side load or action. */
