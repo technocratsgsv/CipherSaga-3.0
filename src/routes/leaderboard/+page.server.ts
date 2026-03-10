@@ -40,7 +40,6 @@ export const load: PageServerLoad = async () => {
                     members: members.length,
                     gsv: data.gsv_verified || false
                 };
-
             });
 
             leaderboardCache.sort((a, b) => b.score - a.score);
