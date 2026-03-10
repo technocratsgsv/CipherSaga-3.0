@@ -2,8 +2,11 @@ import type { RequestHandler } from './$types';
 import { error, json, redirect } from '@sveltejs/kit';
 import { FieldValue } from 'firebase-admin/firestore';
 import { adminDB } from '$lib/server/admin';
+import NodeCache from 'node-cache';
 
 const questionsCollectionRef = adminDB.collection("levels");
+// Cache questions for 5 minutes — they don't change mid-game
+const questionCache = new NodeCache({ stdTTL: 300 });
 
 export const POST: RequestHandler = async ({ request, locals }) => {
 
@@ -23,28 +26,12 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
     answer = answer.toLowerCase().trim();
 
-    console.log("Submission:", questionId, answer);
-    const userDoc = await adminDB.collection('users').doc(locals.userID).get();
-
-    if (!userDoc.exists) {
-        throw error(404, "User not found");
-    }
-
-    const userData = userDoc.data();
-    const teamId = userData?.team;
+    // ✅ locals.userTeam is set by hooks.server.ts — no need to re-fetch user doc
+    const teamId = locals.userTeam;
 
     if (!teamId) {
         throw error(400, "User not in a team");
     }
-
-    const teamDoc = await adminDB.collection('/teams').doc(teamId).get();
-
-    if (!teamDoc.exists) {
-        throw error(404, "Team not found");
-    }
-
-    const teamData = teamDoc.data();
-    const level = teamData?.level || 0;
 
     const now = new Date();
     const startTime = new Date("2026-03-10T06:30:00Z");
@@ -57,23 +44,23 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         throw error(405, "Event not active");
     }
 
-    const questionDoc = await questionsCollectionRef.doc(questionId).get();
-
-    if (!questionDoc.exists) {
-        throw error(404, "Question not found");
+    // ✅ Cache question docs — they only change when admin updates them
+    let questionData = questionCache.get<any>(questionId);
+    if (!questionData) {
+        const questionDoc = await questionsCollectionRef.doc(questionId).get();
+        if (!questionDoc.exists) {
+            throw error(404, "Question not found");
+        }
+        questionData = questionDoc.data();
+        questionCache.set(questionId, questionData);
     }
 
-    const questionData = questionDoc.data();
 
     const submittedLevel = questionData?.level;
     const actualAnswer = questionData?.answer?.toLowerCase();
 
     if (submittedLevel === undefined || !actualAnswer) {
         throw error(500, "Invalid question data");
-    }
-
-    if (level < submittedLevel) {
-        throw error(405, "Level locked");
     }
 
     let wasCorrect = false;
@@ -88,6 +75,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         }
 
         const teamData = teamSnap.data();
+        const level = teamData?.level || 0;
         const completedLevels: string[] = teamData?.completed_levels || [];
 
         if (completedLevels.includes(questionId)) {
