@@ -3,7 +3,6 @@
     import { sendSuccessToast, sendErrorToast } from "$lib/toast_utils";
 
     export let data;
-    import { Doc } from "sveltefire";
     import { Button } from "@/components/ui/MovingBorder";
     import { Hammer } from "lucide-svelte";
     let clicked = false;
@@ -31,18 +30,18 @@
     Your team
 </h2>
 
-<Doc ref={`teams/${data.userTeam}`} let:data>
+{#if data.teamInfo}
     <center>
         <p
             class="relative z-10 bg-gradient-to-b from-neutral-200 to-primary bg-clip-text text-center font-sans text-4xl md:text-6xl font-bold text-transparent pb-[1vh]"
         >
-            {data.teamName}
+            {data.teamInfo.teamName}
         </p>
         <Button
             borderRadius="0.75rem"
             className="bg-white-300 text-white border-slate-800 text-lg font-medium font-mono"
             onClick={() => {
-                navigator.clipboard.writeText(data.code);
+                navigator.clipboard.writeText(data.teamInfo.code);
                 clicked = true;
                 setTimeout(() => {
                     clicked = false;
@@ -51,40 +50,28 @@
         >
             {#if clicked}
                 Copied!
-            {:else}{data.code}{/if}
+            {:else}{data.teamInfo.code}{/if}
         </Button>
-        <!--{#if data.owner}-->
-        <!--    -->
-        <!--    {/if}-->
     </center>
     <center>
         <p class="text-lg mt-4 font-medium text-primary font-sans">
-            Level {data.level} • Members {data.members.length}/3
+            Level {data.teamInfo.level} • Members {data.teamInfo.members
+                .length}/3
         </p>
     </center>
     <center>
-        <!--<div class=" mt-4 text-2xl text-secondary">Members</div>-->
-        <!--{#each data.members as member}-->
-        <!--    <div class="text-lg text-white">-->
-        <!--        <Doc ref={`users/${member}`} let:data>-->
-        <!--            {data.username}-->
-        <!--        </Doc>-->
-        <!--    </div>-->
-        <!--{/each}-->
         <div class="w-[50%]">
             <div class="overflow-x-auto">
-                {#each data.members as member}
-                    <Doc ref={`users/${member}`} let:data={data2}>
-                        <p class="mt-2 font-medium text-xl">
-                            {data2.username}
-                            {#if data.owner === member}👑{/if}
-                        </p>
-                    </Doc>
+                {#each data.teamInfo.members as member}
+                    <p class="mt-2 font-medium text-xl">
+                        {member.username}
+                        {#if data.teamInfo.owner === member.id}👑{/if}
+                    </p>
                 {/each}
             </div>
         </div>
 
-        {#if !data.banned}
+        {#if !data.teamInfo.banned}
             <button
                 class="btn btn-wide mt-10 btn-outline btn-primary"
                 disabled={loading}
@@ -96,6 +83,4 @@
             >
         {/if}
     </center>
-
-    <span class="loading loading-ring loading-xl" slot="loading"></span>
-</Doc>
+{/if}

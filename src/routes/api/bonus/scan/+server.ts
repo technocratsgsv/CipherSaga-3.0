@@ -2,6 +2,9 @@ import { json, error } from '@sveltejs/kit';
 import { adminDB } from '$lib/server/admin';
 import { FieldValue } from 'firebase-admin/firestore';
 import type { RequestHandler } from './$types';
+import NodeCache from 'node-cache';
+
+const scanCache = new NodeCache({ stdTTL: 30 }); // 30s cache
 
 export const POST: RequestHandler = async ({ request, locals }) => {
     // 1. Verify user is authenticated and in a team
@@ -16,17 +19,20 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     }
 
     try {
-        // 2. Check if qrString exists in bonusQuestions
-        // We query by the 'qrString' field in the 'bonusQuestions' collection
-        const questionsRef = adminDB.collection('bonusQuestions');
-        const querySnapshot = await questionsRef.where('qrString', '==', qrString).limit(1).get();
-
-        if (querySnapshot.empty) {
-            return error(404, 'Invalid QR Code.');
+        // 2. Check if qrString exists in memory-cached bonusQuestions
+        let allBonusQuestions = scanCache.get<any[]>("allBonusQuestions");
+        if (!allBonusQuestions) {
+            const questionsRef = adminDB.collection('bonusQuestions');
+            const querySnapshot = await questionsRef.get();
+            allBonusQuestions = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            scanCache.set("allBonusQuestions", allBonusQuestions);
         }
 
-        const questionDoc = querySnapshot.docs[0];
-        const questionData = questionDoc.data();
+        const questionData = allBonusQuestions.find(q => q.qrString === qrString);
+
+        if (!questionData) {
+            return error(404, 'Invalid QR Code.');
+        }
 
         // Optional: Check if question is visible/active? 
         // For now, even if solved, we might want to allow scanning to see the hint/question context
