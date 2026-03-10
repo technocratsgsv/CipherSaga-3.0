@@ -139,8 +139,7 @@
                             and additional clues that lead them closer to the
                             final solution. Teams must solve each step of the
                             hunt before their competitors to reach the final
-                            answer and earn valuable bonus marks. >>>>>>>
-                            origin/main
+                            answer and earn valuable bonus marks.
                         </p>
                     </div>
                     <div class="pb-[3vh]">
