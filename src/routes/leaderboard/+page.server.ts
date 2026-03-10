@@ -1,43 +1,55 @@
 import { adminDB } from '$lib/server/admin';
 import type { PageServerLoad } from './$types';
 
+let leaderboardCache: any[] = [];
+let lastFetch = 0;
+
 export const load: PageServerLoad = async () => {
 
     try {
 
-        const snapshot = await adminDB
-            .collection("teams")
-            .orderBy("level", "desc")
-            .orderBy("last_change")
-            .get();
+        const now = Date.now();
 
-        const leaderboard = snapshot.docs.map((doc) => {
+        // refresh leaderboard only every 10 minutes
+        if (!leaderboardCache.length || now - lastFetch > 600000) {
 
-            const data = doc.data() || {};
+            const snapshot = await adminDB
+                .collection("teams")
+                .orderBy("level", "desc")
+                .orderBy("last_change")
+                .limit(20) // reduce reads further
+                .get();
 
-            const level = data.level || 1;
-            const bonusPoints = data.bonusPoints || 0;
+            leaderboardCache = snapshot.docs.map((doc) => {
 
-            const baseScore = (level - 1) * 100;
-            const totalScore = baseScore + bonusPoints;
+                const data = doc.data() || {};
 
-            const members = data.members || [];
+                const level = data.level || 1;
+                const bonusPoints = data.bonusPoints || 0;
 
-            return {
-                teamName: data.teamName || "Unknown Team",
-                score: totalScore,
-                baseScore,
-                bonusPoints,
-                members: members.length,
-                gsv: data.gsv_verified || false
-            };
+                const baseScore = (level - 1) * 100;
+                const totalScore = baseScore + bonusPoints;
 
-        });
+                const members = data.members || [];
 
-        leaderboard.sort((a, b) => b.score - a.score);
+                return {
+                    teamName: data.teamName || "Unknown Team",
+                    score: totalScore,
+                    baseScore,
+                    bonusPoints,
+                    members: members.length,
+                    gsv: data.gsv_verified || false
+                };
+
+            });
+
+            leaderboardCache.sort((a, b) => b.score - a.score);
+
+            lastFetch = now;
+        }
 
         return {
-            leaderboard
+            leaderboard: leaderboardCache
         };
 
     } catch (error: any) {
@@ -45,7 +57,7 @@ export const load: PageServerLoad = async () => {
         console.error("Leaderboard Load Error:", error);
 
         return {
-            leaderboard: [],
+            leaderboard: leaderboardCache,
             error: error.message
         };
 
