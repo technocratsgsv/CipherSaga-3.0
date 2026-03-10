@@ -135,7 +135,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 
   return {
     locals,
-    questions: allQuestions.slice(0, level),
+    questions: allQuestions.slice(0, level+1),
     teamData,
     logs
   };
