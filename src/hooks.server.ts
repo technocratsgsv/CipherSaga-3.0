@@ -15,7 +15,24 @@ Sentry.init({
 const appCache = new NodeCache({ stdTTL: 300 });
 
 export const handle = sequence(Sentry.sentryHandle(), (async ({ event, resolve }) => {
-    console.log(`[HOOK] Request URL: ${event.url.pathname}`);
+    const pathname = event.url.pathname;
+
+    // Skip all Firebase logic for static assets (favicon, images, CSS, JS bundles, etc.)
+    // Running DB code on these requests causes 500 errors when Firebase is unavailable.
+    const isStaticAsset = pathname.startsWith('/_app/')
+        || pathname.endsWith('.ico')
+        || pathname.endsWith('.png')
+        || pathname.endsWith('.svg')
+        || pathname.endsWith('.jpg')
+        || pathname.endsWith('.webp')
+        || pathname.endsWith('.woff2')
+        || pathname.endsWith('.css')
+        || pathname.endsWith('.js');
+
+    if (isStaticAsset) {
+        return resolve(event);
+    }
+
     const sessionCookie = event.cookies.get("__session");
 
     // Load banned teams cache
