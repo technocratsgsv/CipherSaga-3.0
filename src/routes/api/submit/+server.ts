@@ -4,26 +4,8 @@ import { FieldValue } from 'firebase-admin/firestore';
 import { adminDB } from '$lib/server/admin';
 
 const questionsCollectionRef = adminDB.collection("levels");
-const questionMap = new Map<string, any>();
-let loaded = false;
 
 export const POST: RequestHandler = async ({ request, locals }) => {
-
-    if (!loaded) {
-        const querySnap = await questionsCollectionRef.get();
-
-        querySnap.docs.forEach((q) => {
-            questionMap.set(q.id, q.data());
-        });
-
-        questionsCollectionRef.onSnapshot((snap) => {
-            snap.docs.forEach((q) => {
-                questionMap.set(q.id, q.data());
-            });
-        });
-
-        loaded = true;
-    }
 
     if (!locals.userTeam || !locals.userExists || !locals.userID) {
         throw redirect(302, "/ready");
@@ -75,11 +57,13 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         throw error(405, "Event not active");
     }
 
-    if (!questionMap.has(questionId)) {
+    const questionDoc = await questionsCollectionRef.doc(questionId).get();
+
+    if (!questionDoc.exists) {
         throw error(404, "Question not found");
     }
 
-    const questionData = questionMap.get(questionId);
+    const questionData = questionDoc.data();
 
     const submittedLevel = questionData?.level;
     const actualAnswer = questionData?.answer?.toLowerCase();
@@ -115,7 +99,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
         if (answer === actualAnswer) {
 
-            const nextLevel = (teamData.level || 0) + 1;
+            const nextLevel = (teamData?.level || 0) + 1;
 
             transaction.update(teamRef, {
                 completed_levels: FieldValue.arrayUnion(questionId),

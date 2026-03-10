@@ -1,9 +1,17 @@
 import { adminDB } from '$lib/server/admin';
 import type { PageServerLoad } from './$types';
 
+let cachedLeaderboard: any[] | null = null;
+let lastCacheTime = 0;
+const CACHE_TTL = 60 * 1000; // 60 seconds
+
 export const load: PageServerLoad = async () => {
 
     try {
+        const now = Date.now();
+        if (cachedLeaderboard && now - lastCacheTime < CACHE_TTL) {
+            return { leaderboard: cachedLeaderboard };
+        }
 
         const snapshot = await adminDB
             .collection("teams")
@@ -35,6 +43,9 @@ export const load: PageServerLoad = async () => {
         });
 
         leaderboard.sort((a, b) => b.score - a.score);
+
+        cachedLeaderboard = leaderboard;
+        lastCacheTime = now;
 
         return {
             leaderboard

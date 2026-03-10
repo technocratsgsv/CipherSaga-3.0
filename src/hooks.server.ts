@@ -4,30 +4,28 @@ import { adminAuth, adminDB } from "$lib/server/admin";
 import { ADMIN_EMAILS } from "$lib/server/adminGuard";
 import type { Handle } from "@sveltejs/kit";
 import { PUBLIC_SENTRY_DSN } from '$env/static/public';
+import NodeCache from 'node-cache';
+
 Sentry.init({
     dsn: PUBLIC_SENTRY_DSN,
     tracesSampleRate: 1
 });
 
-let bannedTeams = new Set<string>();
-let bannedTeamsLoaded = false;
-const bannedTeamsQuery = adminDB.collection("teams").where("banned", "==", true);
+// Cache for 5 minutes (300 seconds) to drastically reduce Firestore reads per navigation
+const appCache = new NodeCache({ stdTTL: 300 });
 
 export const handle = sequence(Sentry.sentryHandle(), (async ({ event, resolve }) => {
     console.log(`[HOOK] Request URL: ${event.url.pathname}`);
     const sessionCookie = event.cookies.get("__session");
 
-    // Load banned teams cache on first request
-    if (!bannedTeamsLoaded) {
+    // Load banned teams cache
+    let bannedTeams = appCache.get<Set<string>>("bannedTeams");
+    if (!bannedTeams) {
+        bannedTeams = new Set<string>();
+        const bannedTeamsQuery = adminDB.collection("teams").where("banned", "==", true);
         const qSnap = await bannedTeamsQuery.get();
-        qSnap.docs.forEach((e) => bannedTeams.add(e.id));
-
-        // Listen for changes to banned teams
-        bannedTeamsQuery.onSnapshot((snap) => {
-            bannedTeams.clear();
-            snap.docs.forEach((e) => bannedTeams.add(e.id));
-        });
-        bannedTeamsLoaded = true;
+        qSnap.docs.forEach((e) => bannedTeams!.add(e.id));
+        appCache.set("bannedTeams", bannedTeams);
     }
 
     // Default admin flags
@@ -54,16 +52,26 @@ export const handle = sequence(Sentry.sentryHandle(), (async ({ event, resolve }
         const adminVerified = event.cookies.get('admin_verified');
         event.locals.isAdmin = isAdminEmail && adminVerified === 'true';
 
-        // Query user document directly (no more userIndex caching)
-        const docRef = adminDB.collection('users').doc(event.locals.userID);
-        const doc = await docRef.get();
+        // Query user document directly but wrap in cache
+        const cacheKey = `user_${event.locals.userID}`;
+        let userData: any = appCache.get(cacheKey);
+        let userExists = appCache.get(`exists_${cacheKey}`) as boolean | undefined;
 
-        if (doc.exists) {
-            const data = doc.data();
-            const team = data?.team;
+        if (userData === undefined || userExists === undefined) {
+            const docRef = adminDB.collection('users').doc(event.locals.userID);
+            const doc = await docRef.get();
+            userExists = doc.exists;
+            userData = doc.exists ? doc.data() : null;
+
+            appCache.set(cacheKey, userData);
+            appCache.set(`exists_${cacheKey}`, userExists);
+        }
+
+        if (userExists && userData) {
+            const team = userData?.team;
             event.locals.userExists = true;
             event.locals.userTeam = team;
-            event.locals.banned = team ? bannedTeams.has(team) : false;
+            event.locals.banned = team ? (bannedTeams?.has(team) ?? false) : false;
         } else {
             event.locals.userExists = false;
             event.locals.userTeam = null;
