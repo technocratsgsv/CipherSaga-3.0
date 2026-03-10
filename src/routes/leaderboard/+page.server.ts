@@ -17,7 +17,7 @@ export const load: PageServerLoad = async () => {
                 .collection("teams")
                 .orderBy("level", "desc")
                 .orderBy("last_change")
-                .limit(20) // reduce reads further
+                .limit(70) // reduce reads further
                 .get();
 
             leaderboardCache = snapshot.docs.map((doc) => {
