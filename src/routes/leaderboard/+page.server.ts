@@ -1,54 +1,55 @@
 import { adminDB } from '$lib/server/admin';
 import type { PageServerLoad } from './$types';
 
-let cachedLeaderboard: any[] | null = null;
-let lastCacheTime = 0;
-const CACHE_TTL = 60 * 1000; // 60 seconds
+let leaderboardCache: any[] = [];
+let lastFetch = 0;
+const CACHE_TTL = 10 * 60 * 1000; // 10 minutes (600000ms)
 
 export const load: PageServerLoad = async () => {
 
     try {
         const now = Date.now();
-        if (cachedLeaderboard && now - lastCacheTime < CACHE_TTL) {
-            return { leaderboard: cachedLeaderboard };
+
+        // refresh leaderboard only every 10 minutes
+        if (!leaderboardCache.length || now - lastFetch > CACHE_TTL) {
+
+            const snapshot = await adminDB
+                .collection("teams")
+                .orderBy("level", "desc")
+                .orderBy("last_change")
+                .limit(20) // reduce reads further
+                .get();
+
+            leaderboardCache = snapshot.docs.map((doc) => {
+
+                const data = doc.data() || {};
+
+                const level = data.level || 1;
+                const bonusPoints = data.bonusPoints || 0;
+
+                const baseScore = (level - 1) * 100;
+                const totalScore = baseScore + bonusPoints;
+
+                const members = data.members || [];
+
+                return {
+                    teamName: data.teamName || "Unknown Team",
+                    score: totalScore,
+                    baseScore,
+                    bonusPoints,
+                    members: members.length,
+                    gsv: data.gsv_verified || false
+                };
+
+            });
+
+            leaderboardCache.sort((a, b) => b.score - a.score);
+
+            lastFetch = now;
         }
 
-        const snapshot = await adminDB
-            .collection("teams")
-            .orderBy("level", "desc")
-            .orderBy("last_change")
-            .get();
-
-        const leaderboard = snapshot.docs.map((doc) => {
-
-            const data = doc.data() || {};
-
-            const level = data.level || 1;
-            const bonusPoints = data.bonusPoints || 0;
-
-            const baseScore = (level - 1) * 100;
-            const totalScore = baseScore + bonusPoints;
-
-            const members = data.members || [];
-
-            return {
-                teamName: data.teamName || "Unknown Team",
-                score: totalScore,
-                baseScore,
-                bonusPoints,
-                members: members.length,
-                gsv: data.gsv_verified || false
-            };
-
-        });
-
-        leaderboard.sort((a, b) => b.score - a.score);
-
-        cachedLeaderboard = leaderboard;
-        lastCacheTime = now;
-
         return {
-            leaderboard
+            leaderboard: leaderboardCache
         };
 
     } catch (error: any) {
@@ -56,7 +57,7 @@ export const load: PageServerLoad = async () => {
         console.error("Leaderboard Load Error:", error);
 
         return {
-            leaderboard: [],
+            leaderboard: leaderboardCache,
             error: error.message
         };
 
