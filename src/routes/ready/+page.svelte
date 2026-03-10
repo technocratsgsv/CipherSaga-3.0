@@ -239,7 +239,7 @@
     }
 </script>
 
-<title>Cipher Saga 2.0 - Ready</title>
+<title>Cipher Saga 3.0 - Ready</title>
 <!--
 <BackgroundBeams/>-->
 <!--{#if data.userID === null}-->
@@ -434,7 +434,7 @@
         >
         <button
             class="relative z-20 mt-4 btn btn-wide btn-accent"
-            on:click={async () => await open("https://discord.gg/Dm5zy3EaE4")}
+            on:click={async () => await open("https://discord.gg/bTjYmfUw")}
             >Join Discord</button
         >
         <!--<button class="relative z-20 mt-4 btn btn-wide btn-info" on:click={async ()=>await open("https://github.com/Soham-Wani/CryptIQ")}>View repository</button>-->
