@@ -632,8 +632,8 @@
                                     href="https://www.linkedin.com/in/dr-sonu-lamba-2a385694/"
                                 >
                                     <img
-                                        src="https://i.ibb.co/6cfXncPm/1736622240889.jpg"
-                                        alt="Dr. Sonu Lamba"
+                                        src="https://i.ibb.co/whYZ0Ws3/Whats-App-Image-2025-03-13-at-9-40-35-PM.jpg"
+                                        alt="Soham Wani"
                                         class="w-20 h-20 rounded-full mb-2 mx-auto object-cover"
                                     />
                                     <h2
