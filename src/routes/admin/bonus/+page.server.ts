@@ -60,6 +60,7 @@ export const load: PageServerLoad = async ({ locals }) => {
             solvedAt: data.solvedAt ? data.solvedAt.toDate().toISOString() : null,
             scannedByTeams,
             scannedByCount: scannedByTeams.length,
+            imageUrl: data.imageUrl || '',
         };
     });
 
@@ -78,6 +79,7 @@ export const actions: Actions = {
         const qrString = (data.get('qrString') as string)?.trim();
         const points = parseInt(data.get('points') as string, 10);
         const negative_points = parseInt(data.get('negative_points') as string, 10) || 0;
+        const imageUrl = (data.get('imageUrl') as string)?.trim() ?? '';
 
         if (!title || !description || !answer || !qrString || isNaN(points)) {
             return fail(400, { createError: 'Title, description, answer, QR string, and points are required.' });
@@ -85,7 +87,7 @@ export const actions: Actions = {
 
         await adminDB.collection('bonusQuestions').add({
             title, description, hint, answer, qrString,
-            points, negative_points,
+            points, negative_points, imageUrl,
             isSolved: false,
             isVisible: true,
             solvedByTeamId: null,
@@ -112,6 +114,7 @@ export const actions: Actions = {
             qrString: (data.get('qrString') as string)?.trim(),
             points: parseInt(data.get('points') as string, 10),
             negative_points: parseInt(data.get('negative_points') as string, 10) || 0,
+            imageUrl: (data.get('imageUrl') as string)?.trim() ?? '',
             updatedAt: FieldValue.serverTimestamp(),
         });
 

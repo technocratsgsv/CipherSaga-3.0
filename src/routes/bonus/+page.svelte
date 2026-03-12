@@ -322,6 +322,19 @@
 
                                 {#if activeQuestionId === q.id}
                                     <div class="p-8 pt-2" transition:slide>
+                                        <!-- IMAGE (if present) -->
+                                        {#if q.imageUrl}
+                                            <div
+                                                class="mb-6 flex justify-center"
+                                            >
+                                                <img
+                                                    src={q.imageUrl}
+                                                    alt="Bonus Challenge"
+                                                    class="max-w-full max-h-[400px] rounded-xl border border-zinc-700 shadow-2xl object-contain bg-black/40"
+                                                />
+                                            </div>
+                                        {/if}
+
                                         <!-- HINT -->
                                         <div
                                             class="bg-purple-900/20 border border-purple-500/20 rounded-lg p-4 mb-6 shadow-inner"
