@@ -26,6 +26,7 @@ export const load: PageServerLoad = async ({ locals }) => {
                     isVisible: data.isVisible,
                     negative_points: data.negative_points,
                     answer: data.answer, // admins see answers
+                    imageUrl: data.imageUrl || '',
                 };
             });
             bonusCache.set("adminBonusQuestions", questions, 60); // 1 minute Admin Cache
@@ -100,6 +101,7 @@ export const load: PageServerLoad = async ({ locals }) => {
                 isSolvedByMe: solvedByMe,
                 // SENSITIVE DATA
                 hint: isUnlocked ? data.hint : null, // Only show hint if unlocked
+                imageUrl: isUnlocked ? (data.imageUrl || '') : '', // Only show image if unlocked
                 // NEVER return answer
             };
         }).filter(q => q !== null); // Remove hidden ones

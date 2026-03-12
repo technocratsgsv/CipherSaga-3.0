@@ -91,12 +91,13 @@
                         class="grid grid-cols-1 sm:grid-cols-2 gap-4"
                     >
                         <div class="form-control sm:col-span-2">
-                            <label class="label"
+                            <label class="label" for="create-title"
                                 ><span class="label-text text-neutral-400"
                                     >Title</span
                                 ></label
                             >
                             <input
+                                id="create-title"
                                 name="title"
                                 type="text"
                                 class="input input-bordered bg-zinc-900 border-zinc-700 text-neutral-200 focus:border-primary"
@@ -104,36 +105,39 @@
                             />
                         </div>
                         <div class="form-control sm:col-span-2">
-                            <label class="label"
+                            <label class="label" for="create-description"
                                 ><span class="label-text text-neutral-400"
                                     >Description / Question</span
                                 ></label
                             >
                             <textarea
+                                id="create-description"
                                 name="description"
                                 class="textarea textarea-bordered bg-zinc-900 border-zinc-700 text-neutral-200 focus:border-primary h-20"
                                 required
                             ></textarea>
                         </div>
                         <div class="form-control sm:col-span-2">
-                            <label class="label"
+                            <label class="label" for="create-hint"
                                 ><span class="label-text text-neutral-400"
                                     >Hint (optional)</span
                                 ></label
                             >
                             <input
+                                id="create-hint"
                                 name="hint"
                                 type="text"
                                 class="input input-bordered bg-zinc-900 border-zinc-700 text-neutral-200 focus:border-primary"
                             />
                         </div>
                         <div class="form-control">
-                            <label class="label"
+                            <label class="label" for="create-answer"
                                 ><span class="label-text text-neutral-400"
                                     >Answer (lowercase)</span
                                 ></label
                             >
                             <input
+                                id="create-answer"
                                 name="answer"
                                 type="text"
                                 class="input input-bordered bg-zinc-900 border-zinc-700 text-neutral-200 focus:border-primary"
@@ -141,12 +145,13 @@
                             />
                         </div>
                         <div class="form-control">
-                            <label class="label"
+                            <label class="label" for="create-qr"
                                 ><span class="label-text text-neutral-400"
                                     >QR String (unique key)</span
                                 ></label
                             >
                             <input
+                                id="create-qr"
                                 name="qrString"
                                 type="text"
                                 class="input input-bordered bg-zinc-900 border-zinc-700 text-neutral-200 focus:border-primary"
@@ -154,12 +159,13 @@
                             />
                         </div>
                         <div class="form-control">
-                            <label class="label"
+                            <label class="label" for="create-points"
                                 ><span class="label-text text-neutral-400"
                                     >Points (on solve)</span
                                 ></label
                             >
                             <input
+                                id="create-points"
                                 name="points"
                                 type="number"
                                 class="input input-bordered bg-zinc-900 border-zinc-700 text-neutral-200 focus:border-primary"
@@ -167,15 +173,29 @@
                             />
                         </div>
                         <div class="form-control">
-                            <label class="label"
+                            <label class="label" for="create-neg"
                                 ><span class="label-text text-neutral-400"
                                     >Negative Points (on wrong)</span
                                 ></label
                             >
                             <input
+                                id="create-neg"
                                 name="negative_points"
                                 type="number"
                                 value="0"
+                                class="input input-bordered bg-zinc-900 border-zinc-700 text-neutral-200 focus:border-primary"
+                            />
+                        </div>
+                        <div class="form-control sm:col-span-2">
+                            <label class="label" for="create-image"
+                                ><span class="label-text text-neutral-400"
+                                    >Image URL (optional)</span
+                                ></label
+                            >
+                            <input
+                                id="create-image"
+                                name="imageUrl"
+                                type="text"
                                 class="input input-bordered bg-zinc-900 border-zinc-700 text-neutral-200 focus:border-primary"
                             />
                         </div>
@@ -311,6 +331,20 @@
                                         name="negative_points"
                                         type="number"
                                         value={editingQ.negative_points}
+                                        class="input input-bordered input-sm bg-zinc-950 border-zinc-700 text-neutral-200"
+                                    />
+                                </div>
+                                <div class="form-control sm:col-span-2">
+                                    <label class="label"
+                                        ><span
+                                            class="label-text text-xs text-neutral-400"
+                                            >Image URL</span
+                                        ></label
+                                    >
+                                    <input
+                                        name="imageUrl"
+                                        type="text"
+                                        value={editingQ.imageUrl}
                                         class="input input-bordered input-sm bg-zinc-950 border-zinc-700 text-neutral-200"
                                     />
                                 </div>
@@ -456,6 +490,20 @@
                                         >
                                             Hint: {q.hint}
                                         </p>
+                                    {/if}
+                                    {#if q.imageUrl}
+                                        <div class="mt-2">
+                                            <p
+                                                class="text-xs text-neutral-500 mb-1"
+                                            >
+                                                Image:
+                                            </p>
+                                            <img
+                                                src={q.imageUrl}
+                                                alt="preview"
+                                                class="h-20 w-auto rounded border border-zinc-800 object-contain"
+                                            />
+                                        </div>
                                     {/if}
                                 </div>
                                 <!-- Actions -->
